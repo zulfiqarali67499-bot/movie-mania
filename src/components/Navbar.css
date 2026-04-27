@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap');
+:root {
+  --primary-bg: #0b0f19;       
+  --accent-red: #e50914;       
+  --accent-red-light: #ff4d4d;
+  --text-main: #f8fafc;        
+  --text-muted: #94a3b8;    
+  --glass-bg: rgba(11, 15, 25, 0.8);
+  --border-glow: rgba(229, 9, 20, 0.3);
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: var(--text-main);
+  font-family: 'Inter', system-ui, sans-serif; 
+}
+body a,body ul{
+    text-decoration: none;
+    list-style: none;
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px) saturate(150%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.75rem 0;
+}
+
+.navbar-container {
+    max-width: 1200px; 
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: var(--text-main);
+}
+
+.logo span {
+    background: linear-gradient(to right, var(--accent-red), var(--accent-red-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+}
+
+.nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+}
+
+.nav-item {
+    position: relative;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: var(--transition-smooth);
+    padding: 0.5rem 0;
+}
+
+.nav-item:hover {
+    color: var(--text-main);
+}
+
+.nav-item.active {
+    color: var(--text-main);
+}
+
+
+.nav-underline {
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--accent-red);
+    border-radius: 4px;
+    box-shadow: 0 0 15px var(--accent-red);
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .nav-links { gap: 1.5rem; }
+    .logo { font-size: 1.2rem; }
+}
