@@ -30,3 +30,8 @@ export const movieSearch = async (query) => {
         throw err;
     }
 }
+export const getMovieVideos = async (id) => {
+  const response = await fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`);
+  const data = await response.json();
+  return data.results;
+};

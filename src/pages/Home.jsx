@@ -8,128 +8,138 @@ const Home = () => {
   const [search, setSearch] = useState("");
   const [movies, setMovies] = useState([]);
   const [featuredMovie, setFeaturedMovie] = useState(null); 
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [activeMovie, setActiveMovie] = useState(null); 
 
-  const fetchPopular = async () => {
+  // Keyboard se ESC dabane par video band karne ke liye
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) setActiveMovie(null);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
+  const fetchMovies = async (query = "") => {
     setLoading(true);
     try {
-      const data = await moviePopular();
-      setMovies(data);
-      // Banner ke liye pehli trending movie select ki
-      setFeaturedMovie(data[0]); 
-    } catch (err) {
-      setError("Failed to load movies...");
-    } finally {
-      setLoading(false);
+      if (query) {
+        const results = await movieSearch(query);
+        setMovies(results);
+      } else {
+        const data = await moviePopular();
+        setMovies(data);
+        if (!featuredMovie && data.length > 0) {
+          const randomIndex = Math.floor(Math.random() * Math.min(data.length, 5));
+          setFeaturedMovie(data[randomIndex]);
+        }
+      }
+    } catch (err) { 
+      console.error("Error fetching movies:", err); 
+    } finally { 
+      setLoading(false); 
     }
   };
 
-  useEffect(() => {
-    fetchPopular();
-  }, []);
+  useEffect(() => { fetchMovies(); }, []);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!search.trim()) {
-      fetchPopular();
-      return;
-    }
-    setLoading(true);
-    try {
-      const results = await movieSearch(search);
-      setMovies(results);
-      setError(null);
-    } catch (err) {
-      setError("Search failed...");
-    } finally {
-      setLoading(false);
-    }
+  const handleDownload = (id, title) => {
+    const downloadUrl = `https://www.google.com/search?q=index+of+${encodeURIComponent(title)}+1080p+direct+link`;
+    window.open(downloadUrl, "_blank");
   };
 
   return (
     <div className="home-container">
-      {/* Dynamic Hero Section */}
+      
+      {/* --- PREMIUM FULL SCREEN PLAYER --- */}
       <AnimatePresence>
-        {!search && featuredMovie && (
-          <motion.section 
-            className="hero-banner"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(8, 13, 23, 0.2), #080d17), 
-              url(https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path})`
-            }}
+        {activeMovie && (
+          <motion.div 
+            className="player-overlay"
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            onClick={() => setActiveMovie(null)} 
           >
-            <div className="hero-content">
-              <motion.h1 
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                {featuredMovie.title}
-              </motion.h1>
-              <motion.p
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                {featuredMovie.overview.slice(0, 160)}...
-              </motion.p>
+            <div className="player-container" onClick={(e) => e.stopPropagation()}>
               
-              <div className="form-section">
-                <form onSubmit={handleSearch} className="search-form">
-                  <input 
-                    type="text" 
-                    placeholder='Search for movies, genres...' 
-                    value={search} 
-                    onChange={(e) => setSearch(e.target.value)} 
-                  />
-                  <button type="submit" className="search-btn" disabled={loading}>
-                    {loading ? <div className="spinner"></div> : "Search"}
-                  </button>
-                </form>
+              <button 
+                className="close-player-fab" 
+                onClick={() => setActiveMovie(null)}
+                title="Close Player"
+              >
+                &times;
+              </button>
+
+              <div className="player-header">
+                <h3>{activeMovie.title}</h3>
+                <span className="quality-badge">HD 1080p</span>
+              </div>
+              
+              <div className="video-wrapper">
+                <iframe 
+                  src={`https://vidsrc.me/embed/movie?tmdb=${activeMovie.id}`} 
+                  frameBorder="0" 
+                  allowFullScreen 
+                  title="Movie Player"
+                ></iframe>
+              </div>
+
+              <div className="player-footer">
+                <p>{activeMovie.overview}</p>
+                <button className="btn-dl-now" onClick={() => handleDownload(activeMovie.id, activeMovie.title)}>
+                  📥 High Speed Download
+                </button>
               </div>
             </div>
-          </motion.section>
+          </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Agar Search kar rahe hon toh sirf Form dikhayein */}
-      {search && (
-        <div className="simple-search-area">
-           <form onSubmit={handleSearch} className="search-form">
-                <input 
-                  type="text" 
-                  placeholder='Search for movies...' 
-                  value={search} 
-                  onChange={(e) => setSearch(e.target.value)} 
-                />
-                <button type="submit" className="search-btn">Search</button>
-            </form>
-        </div>
+      {/* --- HERO SECTION --- */}
+      {!search && featuredMovie && !activeMovie && (
+        <section className="hero-banner" style={{
+          backgroundImage: `linear-gradient(to right, #080d17 15%, transparent 100%), url(https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path})`
+        }}>
+          <div className="hero-content">
+            <div className="trending-chip"><span className="pulse"></span> Now Streaming</div>
+            <h1 className="hero-title">{featuredMovie.title}</h1>
+            <p className="hero-description">{featuredMovie.overview}</p>
+            
+            <div className="hero-actions">
+              <button className="btn-watch-main" onClick={() => setActiveMovie(featuredMovie)}>
+                ▶ Start Watching
+              </button>
+              <form onSubmit={(e) => { e.preventDefault(); fetchMovies(search); }} className="hero-search-bar">
+                <input type="text" placeholder="Search movies..." value={search} onChange={(e) => setSearch(e.target.value)} />
+                <button type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </section>
       )}
 
-      <div className="content-area">
-        <h2 className="section-title">
-          {search ? `Results for "${search}"` : "Trending Now"}
-        </h2>
-
-        {error && <div className="error-msg">{error}</div>}
-
-        <div className='movie-grid'>
-          {loading ? (
-              [...Array(8)].map((_, i) => <div key={i} className="skeleton-card"></div>)
-          ) : (
-            <AnimatePresence>
-              {movies.map((m, index) => (
-                <MovieCard movie={m} key={m.id} index={index} />
-              ))}
-            </AnimatePresence>
-          )}
+      {/* --- MOVIE GRID --- */}
+      <main className="content-area">
+        <h2 className="section-title">{search ? "Search Results" : "Most Popular Movies"}</h2>
+        <div className="title-underline"></div>
+        
+        <div className="movie-grid">
+          {loading ? [...Array(12)].map((_, i) => <div key={i} className="skeleton-card"></div>) : 
+            movies.map((m) => (
+              <div key={m.id} className="premium-card-wrapper" onClick={() => setActiveMovie(m)}>
+                {/* Clean MovieCard without favorite props */}
+                <MovieCard movie={m} />
+                
+                <div className="card-overlay">
+                   <div className="play-icon">▶</div>
+                   <p>Click to Stream</p>
+                </div>
+              </div>
+            ))
+          }
         </div>
-      </div>
+      </main>
     </div>
   );
 };
