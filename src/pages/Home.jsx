@@ -11,7 +11,7 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activeMovie, setActiveMovie] = useState(null); 
 
-  // Keyboard se ESC dabane par video band karne ke liye
+  // Keyboard ESC support
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) setActiveMovie(null);
@@ -30,6 +30,7 @@ const Home = () => {
         const data = await moviePopular();
         setMovies(data);
         if (!featuredMovie && data.length > 0) {
+          // Tip: Picking a random featured movie from top 5
           const randomIndex = Math.floor(Math.random() * Math.min(data.length, 5));
           setFeaturedMovie(data[randomIndex]);
         }
@@ -56,20 +57,11 @@ const Home = () => {
         {activeMovie && (
           <motion.div 
             className="player-overlay"
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setActiveMovie(null)} 
           >
             <div className="player-container" onClick={(e) => e.stopPropagation()}>
-              
-              <button 
-                className="close-player-fab" 
-                onClick={() => setActiveMovie(null)}
-                title="Close Player"
-              >
-                &times;
-              </button>
+              <button className="close-player-fab" onClick={() => setActiveMovie(null)} title="Close Player">&times;</button>
 
               <div className="player-header">
                 <h3>{activeMovie.title}</h3>
@@ -79,9 +71,7 @@ const Home = () => {
               <div className="video-wrapper">
                 <iframe 
                   src={`https://vidsrc.me/embed/movie?tmdb=${activeMovie.id}`} 
-                  frameBorder="0" 
-                  allowFullScreen 
-                  title="Movie Player"
+                  frameBorder="0" allowFullScreen title="Movie Player"
                 ></iframe>
               </div>
 
@@ -96,10 +86,11 @@ const Home = () => {
         )}
       </AnimatePresence>
 
-      {/* --- HERO SECTION --- */}
+      {/* --- HERO SECTION (Optimized Image Size) --- */}
       {!search && featuredMovie && !activeMovie && (
         <section className="hero-banner" style={{
-          backgroundImage: `linear-gradient(to right, #080d17 15%, transparent 100%), url(https://image.tmdb.org/t/p/original${featuredMovie.backdrop_path})`
+          // Tip: Using w1280 instead of original for faster loading
+          backgroundImage: `linear-gradient(to right, #080d17 15%, transparent 100%), url(https://image.tmdb.org/t/p/w1280${featuredMovie.backdrop_path})`
         }}>
           <div className="hero-content">
             <div className="trending-chip"><span className="pulse"></span> Now Streaming</div>
@@ -107,9 +98,7 @@ const Home = () => {
             <p className="hero-description">{featuredMovie.overview}</p>
             
             <div className="hero-actions">
-              <button className="btn-watch-main" onClick={() => setActiveMovie(featuredMovie)}>
-                ▶ Start Watching
-              </button>
+              <button className="btn-watch-main" onClick={() => setActiveMovie(featuredMovie)}>▶ Start Watching</button>
               <form onSubmit={(e) => { e.preventDefault(); fetchMovies(search); }} className="hero-search-bar">
                 <input type="text" placeholder="Search movies..." value={search} onChange={(e) => setSearch(e.target.value)} />
                 <button type="submit">Search</button>
@@ -121,14 +110,18 @@ const Home = () => {
 
       {/* --- MOVIE GRID --- */}
       <main className="content-area">
-        <h2 className="section-title">{search ? "Search Results" : "Most Popular Movies"}</h2>
+        <h2 className="section-title">
+            {search ? `Results for: ${search}` : "Most Popular Movies"}
+        </h2>
         <div className="title-underline"></div>
         
         <div className="movie-grid">
-          {loading ? [...Array(12)].map((_, i) => <div key={i} className="skeleton-card"></div>) : 
+          {loading ? (
+            [...Array(12)].map((_, i) => <div key={i} className="skeleton-card"></div>)
+          ) : movies.length > 0 ? (
             movies.map((m) => (
               <div key={m.id} className="premium-card-wrapper" onClick={() => setActiveMovie(m)}>
-                {/* Clean MovieCard without favorite props */}
+                {/* Note: Ensure MovieCard uses loading="lazy" on its <img> tag */}
                 <MovieCard movie={m} />
                 
                 <div className="card-overlay">
@@ -137,7 +130,14 @@ const Home = () => {
                 </div>
               </div>
             ))
-          }
+          ) : (
+            /* --- NO RESULTS STATE --- */
+            <div className="no-results">
+                <h3>Oops! No movies found for "{search}"</h3>
+                <p>Try searching for something else or check your spelling.</p>
+                <button className="btn-watch-main" onClick={() => {setSearch(""); fetchMovies();}}>Go Back</button>
+            </div>
+          )}
         </div>
       </main>
     </div>
