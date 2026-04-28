@@ -1,0 +1,277 @@
+/* ============================================================
+   ULTRA HYPER-PREMIUM FOOTER - ENGINEERED BY ALI SHAIR
+   ============================================================ */
+
+.ultra-footer {
+  background-color: #030303;
+  color: #fff;
+  padding: 140px 7% 40px 7%;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glass-Stroke Top Line */
+.ultra-line-top {
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #e50914, #ff4d4d, transparent);
+  opacity: 0.6;
+  z-index: 1;
+}
+
+/* Ambient Deep Glow */
+.ultra-blur-core {
+  position: absolute;
+  top: -150px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 400px;
+  background: radial-gradient(circle, rgba(229, 9, 20, 0.08) 0%, transparent 75%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ultra-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+}
+
+/* Main Grid Architecture */
+.ultra-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 80px;
+}
+
+@media (min-width: 1024px) {
+  .ultra-grid {
+    grid-template-columns: 1.8fr 1.5fr 1.2fr;
+    align-items: start;
+  }
+}
+
+/* Brand Section */
+.ultra-logo {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin-bottom: 25px;
+  color: #fff;
+}
+
+.ultra-logo span { color: #e50914; }
+
+.ultra-text {
+  color: #666;
+  font-size: 15px;
+  line-height: 1.8;
+  max-width: 380px;
+  margin-bottom: 35px;
+}
+
+/* Social Link Modern Pills */
+.ultra-socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-pill {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #444;
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1px solid #1a1a1a;
+  border-radius: 50px;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  display: inline-block;
+}
+
+.social-pill:hover {
+  color: #fff;
+  border-color: #e50914;
+  background: rgba(229, 9, 20, 0.05);
+}
+
+/* Nav Links & Stack */
+.ultra-links-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.ultra-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 800;
+}
+
+.ultra-nav-link {
+  display: block;
+  color: #666;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 18px;
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ultra-nav-link:hover {
+  color: #fff;
+  transform: translateX(12px);
+}
+
+/* Futuristic Newsletter */
+.newsletter-field {
+  display: flex;
+  background: #080808;
+  border: 1px solid #151515;
+  padding: 6px;
+  border-radius: 14px;
+  transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.newsletter-field:focus-within {
+  border-color: #e50914;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.newsletter-field input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 0 15px;
+  width: 100%;
+}
+
+.newsletter-field button {
+  background: #e50914;
+  color: #fff;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Base Signature Layer */
+.ultra-base {
+  margin-top: 120px;
+  padding-top: 40px;
+  border-top: 1px solid #111;
+}
+
+.base-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (min-width: 768px) { .base-info { flex-direction: row; } }
+
+.copyright { font-size: 11px; color: #333; letter-spacing: 1px; }
+
+.architect-tag { font-size: 10px; letter-spacing: 2px; color: #444; }
+
+.architect-name {
+  color: #888;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.architect-name:hover {
+  color: #fff;
+  text-shadow: 0 0 15px rgba(229, 9, 20, 0.8);
+}
+
+/* ============================================================
+   HYPER-FLUID TOP BUTTON & PROGRESS RING (THE "WOW" FACTOR)
+   ============================================================ */
+
+.ultra-top-container {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  width: 60px;
+  height: 60px;
+  z-index: 10000;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progress-ring {
+  position: absolute;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.progress-ring-indicator {
+  /* Linear for scroll sync, but smooth for visualization */
+  transition: stroke-dashoffset 0.1s linear; 
+}
+
+.ultra-top-btn {
+  width: 48px;
+  height: 48px;
+  /* Ultra-Premium Glassmorphism */
+  background: rgba(15, 15, 15, 0.5) !important;
+  backdrop-filter: blur(25px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(25px) saturate(200%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.ultra-top-container:hover .ultra-top-btn {
+  background: #e50914 !important;
+  border-color: #ff4d4d !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 25px rgba(229, 9, 20, 0.5);
+}
+
+.ultra-top-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.ultra-top-container:hover .ultra-top-btn svg {
+  transform: translateY(-2px); /* Arrow moves up on hover */
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .ultra-footer { text-align: center; padding: 100px 5% 40px 5%; }
+  .ultra-grid { gap: 60px; }
+  .ultra-text { margin-left: auto; margin-right: auto; }
+  .ultra-links-group { flex-direction: column; align-items: center; gap: 40px; }
+  .newsletter-field { max-width: 400px; margin: 0 auto; }
+  .ultra-top-container { bottom: 30px; right: 30px; transform: scale(0.8); }
+}
