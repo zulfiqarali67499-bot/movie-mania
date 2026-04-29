@@ -1,6 +1,6 @@
 /* ==========================================================================
    1. VARIABLES & RESET
-   ========================================================================== */
+   ========================================================================= */
 :root {
   --accent-red: #e50914;
   --accent-red-hover: #ff0f1a;
@@ -11,10 +11,13 @@
   --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-* { box-sizing: border-box; }
+* { 
+  box-sizing: border-box; 
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  margin: 0;
   background-color: var(--bg-dark);
   color: var(--text-main);
   font-family: 'Inter', -apple-system, sans-serif;
@@ -23,7 +26,7 @@ body {
 
 /* ==========================================================================
    2. HERO SECTION
-   ========================================================================== */
+   ========================================================================= */
 .hero-banner {
   height: 90vh;
   width: 100%;
@@ -35,9 +38,18 @@ body {
   position: relative;
   padding: 0 8%;
   box-shadow: inset 0 -150px 100px var(--bg-dark);
+  transition: var(--transition-smooth);
 }
 
-.hero-content { z-index: 10; max-width: 800px; }
+.hero-banner.hero-minimized {
+  height: auto;
+  padding: 120px 8% 40px;
+  min-height: 200px;
+  box-shadow: none;
+  background-attachment: scroll;
+}
+
+.hero-content { z-index: 10; max-width: 800px; width: 100%; }
 
 .trending-chip {
   display: inline-flex;
@@ -70,7 +82,6 @@ body {
   background: linear-gradient(to bottom, #fff 60%, #ccc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.8));
 }
 
 .hero-description {
@@ -86,9 +97,44 @@ body {
 }
 
 /* ==========================================================================
-   3. BUTTONS & INPUTS
-   ========================================================================== */
-.hero-actions { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+   3. SEARCH BAR & BUTTONS
+   ========================================================================= */
+.hero-search-bar {
+  display: flex;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 5px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 450px;
+  width: 100%;
+  transition: var(--transition-bounce);
+  
+  /* Space ko ensure karne ke liye */
+  margin-bottom: 60px !important; 
+  position: relative;
+  z-index: 30; /* Ise Content area se upar rakha hai */
+}
+
+/* Jab search active ho to margin ko adjust karne ke liye */
+.search-active-mode { 
+  max-width: 600px; 
+  border-color: var(--accent-red); 
+  margin: 0 auto 45px auto; /* Centered with bottom margin */
+}
+
+
+.hero-search-bar input {
+  background: transparent; border: none; outline: none;
+  padding: 12px 15px; color: white; width: 100%;
+}
+
+.hero-search-bar button {
+  background: var(--accent-red);
+  color: white; border: none;
+  padding: 10px 25px; border-radius: 8px;
+  font-weight: 700; cursor: pointer;
+}
 
 .btn-watch-main {
   background: var(--accent-red);
@@ -98,45 +144,19 @@ body {
   font-size: 1.1rem;
   font-weight: 800;
   border: none;
+  margin-bottom: 20px;
   cursor: pointer;
   transition: var(--transition-smooth);
 }
 
-.btn-watch-main:hover {
-  background: white;
-  color: black;
-  transform: scale(1.05);
-}
-
-.hero-search-bar {
-  display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  padding: 4px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  flex-grow: 1;
-  max-width: 400px;
-}
-
-.hero-search-bar input {
-  background: transparent; border: none; outline: none;
-  padding: 10px 15px; color: white; width: 100%;
-}
-
-.hero-search-bar button {
-  background: var(--accent-red);
-  color: white; border: none;
-  padding: 10px 20px; border-radius: 8px;
-  font-weight: 700; cursor: pointer;
-}
+.btn-watch-main:hover { background: white; color: black; transform: scale(1.05); }
 
 /* ==========================================================================
    4. CONTENT GRID & CARDS
-   ========================================================================== */
+   ========================================================================= */
 .content-area {
   padding: 0 8% 100px;
-  margin-top: -98px;
+  margin-top: 20px;
   position: relative;
   z-index: 20;
 }
@@ -158,109 +178,148 @@ body {
   transition: var(--transition-bounce);
 }
 
-.premium-card-wrapper:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-}
+.premium-card-wrapper:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
 .card-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
   background: linear-gradient(to top, rgba(229, 9, 20, 0.9), transparent 80%);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: 0.3s;
-  pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  opacity: 0; transition: 0.3s; pointer-events: none;
 }
 
 .premium-card-wrapper:hover .card-overlay { opacity: 1; }
 .play-icon { font-size: 3rem; color: white; margin-bottom: 10px; }
 
 /* ==========================================================================
-   5. PLAYER & MODALS
+   5. PLAYER OVERLAYS (FULL FIXES)
    ========================================================================== */
 .player-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; justify-content: center; align-items: center;
   z-index: 9999;
-  backdrop-filter: blur(15px);
-  background: rgba(0,0,0,0.9);
+  backdrop-filter: blur(25px);
+  background: rgba(0,0,0,0.95);
 }
 
 .player-container {
   width: 90%;
   max-width: 1100px;
-  background: #080d17;
+  background: #000;
   border-radius: 20px;
-  overflow: hidden;
+  overflow: visible !important; 
   position: relative;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 100px rgba(0, 0, 0, 1);
 }
 
 .close-player-fab {
-  position: absolute;
-  top: 15px; right: 20px;
-  background: var(--accent-red);
-  color: white; border: none;
-  width: 45px; height: 45px;
+  position: fixed; /* Absolute se Fixed kar diya */
+  top: 30px; 
+  right: 30px;
+  background: var(--accent-red) !important;
+  color: white !important; 
+  border: 2px solid white !important;
+  width: 55px; 
+  height: 55px;
   border-radius: 50%;
-  font-size: 32px;
+  font-size: 30px;
   cursor: pointer;
-  z-index: 110;
-  display: flex; justify-content: center; align-items: center;
-  transition: var(--transition-smooth);
+  /* Ultimate Z-Index: Ise koi cheez nahi daba sakti */
+  z-index: 99999999 !important; 
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+  transition: var(--transition-bounce);
 }
 
 .close-player-fab:hover {
-  transform: rotate(90deg) scale(1.1);
-  background: white; color: var(--accent-red);
+  transform: scale(1.1) rotate(90deg);
+  background: white !important;
+  color: var(--accent-red) !important;
 }
 
-.video-wrapper { aspect-ratio: 16/9; width: 100%; background: #000; }
-.video-wrapper iframe { width: 100%; height: 100%; border: none; }
+/* Mobile Fix */
+@media (max-width: 768px) {
 
-.player-header { padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+}
+
+.video-wrapper { 
+  aspect-ratio: 16/9; 
+  width: 100%; 
+  background: #000; 
+  border-radius: 15px; 
+  overflow: hidden; 
+  position: relative;
+  z-index: 1; 
+}
+
+.video-wrapper iframe { 
+  width: 100%; 
+  height: 100%; 
+  border: none;
+  z-index: 1;
+}
+
+.player-header { padding: 20px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+.quality-badge { background: #333; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; margin-left: 10px; }
+
 .player-footer { padding: 25px; background: rgba(255,255,255,0.02); }
 
 .btn-dl-now {
-  background: #fff; color: #000;
-  padding: 12px 30px; border-radius: 8px;
-  font-weight: 800; border: none; cursor: pointer;
-  margin-top: 15px; transition: 0.3s;
-}
-.btn-dl-now:hover { background: var(--accent-red); color: white; }
-
-/* ==========================================================================
-   6. ANIMATIONS & SKELETON
-   ========================================================================== */
-@keyframes pulse-ring {
-  0% { transform: scale(1); opacity: 1; }
-  100% { transform: scale(2.5); opacity: 0; }
-}
-
-@keyframes shimmer { to { background-position: -200% 0; } }
-
-.skeleton-card {
-  width: 100%; aspect-ratio: 2/3; border-radius: 15px;
-  background: linear-gradient(90deg, #0d1421 25%, #1a2333 50%, #0d1421 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
+  background: #fff; color: #000; padding: 12px 30px; border-radius: 10px;
+  font-size: 1rem; font-weight: 800; border: none; cursor: pointer;
+  margin-top: 15px; transition: var(--transition-bounce);
 }
 
 /* ==========================================================================
-   7. RESPONSIVE
-   ========================================================================== */
+   6. RESPONSIVE DESIGN (Bugs Fixes)
+   ========================================================================= */
 @media (max-width: 768px) {
   .hero-banner { height: auto; padding: 100px 5% 50px; background-attachment: scroll; }
   .hero-content { text-align: center; }
-  .hero-actions { flex-direction: column; }
-  .hero-search-bar { max-width: 100%; }
-  .content-area { margin-top: -20px; }
-  .movie-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+ .hero-search-bar {
+    margin-bottom: 30px; /* Mobile par margin thoda kam rakha hai taake space bache */
+    max-width: 100%;
+  }
+  
+  .content-area { padding: 0 4% 50px; margin-top: -20px; }
+  
+  /* Masla 2 Fix: 2 Cards side by side */
+  .movie-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
+
+  /* Mobile Close Button Alignment */
+   .close-player-fab {
+    top: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 24px;
+  }
+
+  .player-container {
+    width: 95%;
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-grid { gap: 10px; }
+  .section-title { font-size: 1.5rem; }
+  .hero-title { font-size: 2.2rem; }
+}
+
+/* ==========================================================================
+   7. ANIMATIONS
+   ========================================================================= */
+@keyframes pulse-ring { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+.skeleton-card { aspect-ratio: 2/3; background: #1a2333; border-radius: 12px; animation: pulse 1.5s infinite; }
+
+.no-results {
+  grid-column: 1 / -1; text-align: center; padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.03); border-radius: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.1); margin-top: 20px;
 }
