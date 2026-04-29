@@ -109,20 +109,16 @@ body {
   max-width: 450px;
   width: 100%;
   transition: var(--transition-bounce);
-  
-  /* Space ko ensure karne ke liye */
   margin-bottom: 60px !important; 
   position: relative;
-  z-index: 30; /* Ise Content area se upar rakha hai */
+  z-index: 30;
 }
 
-/* Jab search active ho to margin ko adjust karne ke liye */
 .search-active-mode { 
   max-width: 600px; 
   border-color: var(--accent-red); 
-  margin: 0 auto 45px auto; /* Centered with bottom margin */
+  margin: 0 auto 45px auto;
 }
-
 
 .hero-search-bar input {
   background: transparent; border: none; outline: none;
@@ -192,138 +188,132 @@ body {
 .play-icon { font-size: 3rem; color: white; margin-bottom: 10px; }
 
 /* ==========================================================================
-   5. PLAYER OVERLAYS (FULL FIXES)
+   5. PLAYER OVERLAYS (FIXED OVERFLOW)
    ========================================================================== */
 .player-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  display: flex; justify-content: center; align-items: center;
+  display: flex; flex-direction: column; 
+  justify-content: flex-start; /* Taaki top bar nazar aaye */
+  align-items: center;
   z-index: 9999;
   backdrop-filter: blur(25px);
-  background: rgba(0,0,0,0.95);
+  background: rgba(0,0,0,0.92);
+  overflow-y: auto; /* Agar screen chhoti ho toh scroll ho jaye */
+  padding: 80px 0 40px; /* Top bar ke liye space */
 }
 
-.search-icon-inside {
-    pointer-events: none; 
-    z-index: 10;
+.player-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10001;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
 }
+
+.back-btn, .header-dl-btn {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.header-dl-btn {
+  background: var(--accent-red);
+  border: none;
+  box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+}
+
+.header-dl-btn:hover { background: var(--accent-red-hover); transform: scale(1.05); }
+
 .player-container {
   width: 90%;
-  max-width: 1100px;
+  max-width: 1000px;
   background: #000;
   border-radius: 20px;
-  overflow: visible !important; 
+  overflow: hidden; 
   position: relative;
-  box-shadow: 0 0 100px rgba(0, 0, 0, 1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0; /* Container ko shrink hone se rokna */
 }
 
-.close-player-fab {
-  position: fixed; /* Absolute se Fixed kar diya */
-  top: 30px; 
-  right: 30px;
-  background: var(--accent-red) !important;
-  color: white !important; 
-  border: 2px solid white !important;
-  width: 55px; 
-  height: 55px;
-  border-radius: 50%;
-  font-size: 30px;
+/* HIGH SPEED BUTTON SECTION (Niche wala button) */
+.player-action-bar {
+  padding: 15px 25px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-dl-premium {
+  width: 100%;
+  background: linear-gradient(135deg, var(--accent-red), #9b0a11);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
   cursor: pointer;
-  /* Ultimate Z-Index: Ise koi cheez nahi daba sakti */
-  z-index: 99999999 !important; 
-  display: flex; 
-  justify-content: center; 
+  display: flex;
   align-items: center;
-  box-shadow: 0 0 20px rgba(229, 9, 20, 0.5);
+  justify-content: center;
+  gap: 12px;
   transition: var(--transition-bounce);
 }
 
-.close-player-fab:hover {
-  transform: scale(1.1) rotate(90deg);
-  background: white !important;
-  color: var(--accent-red) !important;
-}
+.btn-dl-premium:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(229, 9, 20, 0.4); }
 
-/* Mobile Fix */
-@media (max-width: 768px) {
-
-}
+.dl-text { text-align: left; display: flex; flex-direction: column; }
+.dl-text strong { font-size: 0.95rem; line-height: 1.2; }
+.dl-text span { font-size: 0.7rem; opacity: 0.7; }
 
 .video-wrapper { 
   aspect-ratio: 16/9; 
   width: 100%; 
   background: #000; 
-  border-radius: 15px; 
-  overflow: hidden; 
-  position: relative;
-  z-index: 1; 
 }
 
 .video-wrapper iframe { 
   width: 100%; 
   height: 100%; 
   border: none;
-  z-index: 1;
 }
 
-.player-header { padding: 20px 25px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-.quality-badge { background: #333; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; margin-left: 10px; }
-
-.player-footer { padding: 25px; background: rgba(255,255,255,0.02); }
-
-.btn-dl-now {
-  background: #fff; color: #000; padding: 12px 30px; border-radius: 10px;
-  font-size: 1rem; font-weight: 800; border: none; cursor: pointer;
-  margin-top: 15px; transition: var(--transition-bounce);
+.player-header { 
+  padding: 15px 25px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  background: rgba(255,255,255,0.02);
 }
+
+.quality-badge { background: #333; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; }
+
+.player-footer { padding: 25px; background: #000; }
+.info-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: var(--accent-red); }
+.info-row h4 { text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1.5px; color: var(--text-muted); }
 
 /* ==========================================================================
-   6. RESPONSIVE DESIGN (Bugs Fixes)
+   6. RESPONSIVE DESIGN
    ========================================================================= */
 @media (max-width: 768px) {
-  .hero-banner { height: auto; padding: 100px 5% 50px; background-attachment: scroll; }
-  .hero-content { text-align: center; }
- .hero-search-bar {
-    margin-bottom: 30px; /* Mobile par margin thoda kam rakha hai taake space bache */
-    max-width: 100%;
-  }
-  
-  .content-area { padding: 0 4% 50px; margin-top: -20px; }
-  
-  /* Masla 2 Fix: 2 Cards side by side */
+  .player-overlay { padding-top: 70px; }
   .movie-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
-
-  /* Mobile Close Button Alignment */
-   .close-player-fab {
-    top: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    font-size: 24px;
-  }
-
-  .player-container {
-    width: 95%;
-    margin-top: 40px;
-  }
+  .player-container { width: 95%; }
+  .back-btn span, .header-dl-btn span { display: none; } /* Mobile pe sirf icons */
 }
 
-@media (max-width: 480px) {
-  .movie-grid { gap: 10px; }
-  .section-title { font-size: 1.5rem; }
-  .hero-title { font-size: 2.2rem; }
-}
-
-/* ==========================================================================
-   7. ANIMATIONS
-   ========================================================================= */
+/* Animation Fixes */
 @keyframes pulse-ring { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(2.5); opacity: 0; } }
-@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-
-.skeleton-card { aspect-ratio: 2/3; background: #1a2333; border-radius: 12px; animation: pulse 1.5s infinite; }
-
-.no-results {
-  grid-column: 1 / -1; text-align: center; padding: 60px 20px;
-  background: rgba(255, 255, 255, 0.03); border-radius: 20px;
-  border: 1px dashed rgba(255, 255, 255, 0.1); margin-top: 20px;
-}

@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap');
+
 :root {
   --primary-bg: #0b0f19;       
   --accent-red: #e50914;       
   --accent-red-light: #ff4d4d;
   --text-main: #f8fafc;        
   --text-muted: #94a3b8;    
-  --glass-bg: rgba(11, 15, 25, 0.8);
+  --glass-bg: rgba(11, 15, 25, 0.95); /* Mobile menu ke liye thoda dark kiya */
   --border-glow: rgba(229, 9, 20, 0.3);
   --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -15,10 +16,12 @@ body {
   color: var(--text-main);
   font-family: 'Inter', system-ui, sans-serif; 
 }
-body a,body ul{
+
+body a, body ul {
     text-decoration: none;
     list-style: none;
 }
+
 .navbar {
     position: fixed;
     top: 0;
@@ -45,6 +48,10 @@ body a,body ul{
     font-weight: 800;
     letter-spacing: -1px;
     color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1001;
 }
 
 .logo span {
@@ -54,46 +61,80 @@ body a,body ul{
     font-style: italic;
 }
 
+/* Menu Toggle Button (Desktop par hidden) */
+.menu-toggle {
+    display: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-main);
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: var(--transition-smooth);
+}
+
 .nav-links {
     display: flex;
-    gap: 3rem;
-    list-style: none;
+    gap: 1.5rem;
+    align-items: center;
 }
 
 .nav-item {
     position: relative;
-    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: var(--transition-smooth);
-    padding: 0.5rem 0;
-}
-
-.nav-item:hover {
-    color: var(--text-main);
+    border-radius: 12px;
 }
 
 .nav-item.active {
     color: var(--text-main);
+    background: rgba(229, 9, 20, 0.12);
+    border: 1px solid var(--border-glow);
 }
 
-
-.nav-underline {
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--accent-red);
-    border-radius: 4px;
-    box-shadow: 0 0 15px var(--accent-red);
-}
-
-/* Mobile adjustments */
+/* Mobile Adjustments */
 @media (max-width: 768px) {
-    .nav-links { gap: 1.5rem; }
-    .logo { font-size: 1.2rem; }
+    .menu-toggle {
+        display: flex; /* Mobile par toggle show hoga */
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Shuru mein screen se bahar */
+        width: 70%;
+        height: 100vh;
+        background: var(--primary-bg);
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+        border-left: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Jab menu open ho */
+    .nav-links.open {
+        right: 0;
+    }
+
+    .nav-item {
+        width: 80%;
+        justify-content: center;
+        font-size: 1rem;
+        padding: 15px;
+    }
+
+    .nav-underline {
+        display: none; /* Mobile par underline ki jagah poora button glow karega */
+    }
 }

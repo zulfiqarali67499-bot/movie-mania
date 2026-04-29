@@ -1,49 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { Home, Heart, Clapperboard, Menu, X } from 'lucide-react'; 
 import "./Navbar.css";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Favorites", path: "/favorite" },
+    { name: "Home", path: "/", icon: <Home size={18} /> },
+    { name: "Favorites", path: "/favorite", icon: <Heart size={18} /> },
   ];
 
   return (
-    <motion.nav 
-      className="navbar"
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-    >
+    <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }}>
       <div className="navbar-container">
-        <Link to="/" className="logo-link">
-          <motion.div 
-            className="logo"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            🎬 Movie<span>Mania</span>
-          </motion.div>
+        <Link to="/" className="logo-link" onClick={() => setIsOpen(false)}>
+          <div className="logo">
+            <Clapperboard size={24} color="var(--accent-red)" fill="var(--accent-red)" fillOpacity={0.2} />
+            MOVIE<span>MANIA</span>
+          </div>
         </Link>
 
-        <ul className="nav-links">
+        {/* Mobile Toggle Button */}
+        <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Navigation Links */}
+        <ul className={`nav-links ${isOpen ? "open" : ""}`}>
           {navLinks.map((link) => {
             const isActive = location.pathname === link.path;
             return (
-              <li key={link.path}>
-                <Link to={link.path} className={`nav-item ${isActive ? "active" : ""}`}>
-                  {link.name}
-                  {isActive && (
-                    <motion.div 
-                      layoutId="nav-underline"
-                      className="nav-underline"
-                      initial={false}
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
+              <li key={link.path} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                <Link 
+                  to={link.path} 
+                  className={`nav-item ${isActive ? "active" : ""}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {React.cloneElement(link.icon, { 
+                    color: isActive ? "var(--accent-red)" : "currentColor" 
+                  })}
+                  <span>{link.name}</span>
                 </Link>
               </li>
             );

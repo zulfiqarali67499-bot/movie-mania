@@ -170,11 +170,13 @@
   cursor: pointer;
 }
 
-/* Base Signature Layer */
+/* Base Signature Layer - Desktop & Mobile dono ke liye */
 .ultra-base {
   margin-top: 120px;
   padding-top: 40px;
-  border-top: 1px solid #111;
+  /* Purani border-top ko hata kar ye do lines add karein */
+  border-top: 1px solid transparent;
+  border-image: linear-gradient(90deg, transparent, rgba(229, 9, 20, 0.3), transparent) 1;
 }
 
 .base-info {
@@ -266,12 +268,110 @@
   transform: translateY(-2px); /* Arrow moves up on hover */
 }
 
-/* Mobile Responsiveness */
+/* ============================================================
+   ULTRA-RESPONSIVE FIXES - OPTIMIZED BY ALI SHAIR
+   ============================================================ */
+
 @media (max-width: 768px) {
-  .ultra-footer { text-align: center; padding: 100px 5% 40px 5%; }
-  .ultra-grid { gap: 60px; }
-  .ultra-text { margin-left: auto; margin-right: auto; }
-  .ultra-links-group { flex-direction: column; align-items: center; gap: 40px; }
-  .newsletter-field { max-width: 400px; margin: 0 auto; }
-  .ultra-top-container { bottom: 30px; right: 30px; transform: scale(0.8); }
+  .ultra-footer { 
+    text-align: center; 
+    padding: 80px 24px 30px 24px; /* Padding thori kam ki mobile ke liye */
+  }
+
+  .ultra-grid { 
+    gap: 50px; 
+    display: flex; /* Grid ki jagah flex use kiya mobile par better control ke liye */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ultra-text { 
+    margin-left: auto; 
+    margin-right: auto; 
+    font-size: 14px; /* Mobile par readability behtar hogi */
+  }
+
+  /* Social links ko center karne ke liye */
+  .ultra-socials {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .social-pill {
+    padding: 8px 16px; /* Choti screens par pills ka size thora kam */
+  }
+
+  /* Links group mobile par side-by-side ki jagah stack honge lekin gap barabar rahega */
+  .ultra-links-group { 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 35px; 
+    width: 100%;
+  }
+
+  .ultra-nav-link:hover {
+    transform: translateY(-3px); /* Mobile par horizontal move ki jagah vertical move better lagta hai */
+  }
+
+  /* Newsletter field ko poori width di taaki typing aasaan ho */
+  .newsletter-field { 
+    width: 100%;
+    max-width: 100%; 
+    margin: 0 auto; 
+    flex-direction: column; /* Input aur Button ko upar niche kiya mobile par */
+    background: transparent;
+    border: none;
+    padding: 0;
+    gap: 12px;
+  }
+
+  .newsletter-field input {
+    background: #080808;
+    border: 1px solid #151515;
+    padding: 15px;
+    border-radius: 12px;
+    height: 50px;
+  }
+
+  .newsletter-field button {
+    width: 100%;
+    height: 50px;
+  }
+/* Base Signature Layer Fix */
+  .ultra-base {
+    margin-top: 40px; /* Pehle 120px thi, isay kam kiya */
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Light border */
+    width: 100%;
+  }
+
+  .base-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Dono lines ke darmiyan gap kam kiya */
+  }
+
+  .copyright {
+    font-size: 10px;
+    order: 2; /* Copyright ko niche rakha */
+  }
+
+  .architect-tag {
+    font-size: 11px;
+    order: 1; /* Ali Shair wali line ko upar kiya taaki focus rahe */
+    margin-bottom: 5px;
+  }
+  /* Scroll top button mobile par thora chota aur accessible */
+  .ultra-top-container { 
+    bottom: 20px; 
+    right: 20px; 
+    transform: scale(0.85); 
+  }
+}
+
+/* Landscape Mobile Fix */
+@media (max-height: 500px) and (orientation: landscape) {
+  .ultra-footer { padding-top: 60px; }
+  .ultra-grid { flex-direction: row; flex-wrap: wrap; justify-content: center; }
 }

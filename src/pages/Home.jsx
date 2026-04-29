@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
-// Lucide Icons Import
-import { Play, Search, X, Download, ArrowLeft } from 'lucide-react';
+import { Play, Search, X, Download, ArrowLeft, Info } from 'lucide-react';
 import MovieCard from '../components/MovieCard';
 import { moviePopular, movieSearch } from "../services/api";
 import "./Home.css";
@@ -61,7 +60,7 @@ const Home = () => {
     fetchMovies("");
   };
 
-  const handleDownload = (id, title) => {
+  const handleDownload = (title) => {
     const downloadUrl = `https://www.google.com/search?q=index+of+${encodeURIComponent(title)}+1080p+direct+link`;
     window.open(downloadUrl, "_blank");
   };
@@ -76,10 +75,15 @@ const Home = () => {
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={() => setActiveMovie(null)} 
           >
-            {/* Close Icon using Lucide X */}
-            <button className="close-player-fab" onClick={() => setActiveMovie(null)}>
-              <X size={24} />
-            </button>
+            {/* Top Navigation Bar */}
+            <div className="player-top-bar">
+                 <button className="back-btn" onClick={() => setActiveMovie(null)}>
+                    <ArrowLeft size={20} /> <span>Close</span>
+                 </button>
+                 <button className="header-dl-btn" onClick={() => handleDownload(activeMovie.title)}>
+                    <Download size={18} /> <span>Download Now</span>
+                 </button>
+            </div>
 
             <div className="player-container" onClick={(e) => e.stopPropagation()}>
               <div className="player-header">
@@ -97,17 +101,30 @@ const Home = () => {
                 ></iframe>
               </div>
 
-              <div className="player-footer">
-                <p>{activeMovie.overview}</p>
-                <button className="btn-dl-now" onClick={() => handleDownload(activeMovie.id, activeMovie.title)}>
-                  <Download size={18} style={{ marginRight: '8px' }} /> High Speed Download
+              {/* High Visibility Action Bar */}
+              <div className="player-action-bar">
+                <button className="btn-dl-premium" onClick={() => handleDownload(activeMovie.title)}>
+                  <Download size={22} /> 
+                  <div className="dl-text">
+                    <strong>High Speed Download</strong>
+                    <span>Direct Server Link for {activeMovie.title}</span>
+                  </div>
                 </button>
+              </div>
+
+              <div className="player-footer">
+                <div className="info-row">
+                    <Info size={16} />
+                    <h4>Movie Overview</h4>
+                </div>
+                <p>{activeMovie.overview}</p>
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Hero Section */}
       {featuredMovie && !activeMovie && (
         <section 
           className={`hero-banner ${search ? "hero-minimized" : ""}`} 
@@ -146,6 +163,7 @@ const Home = () => {
         </section>
       )}
 
+      {/* Content Grid */}
       <main className="content-area">
         <h2 className="section-title">
             {search ? `Results for: "${search}"` : "Most Popular Movies"}
