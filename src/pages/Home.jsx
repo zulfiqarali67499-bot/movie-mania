@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
+// Lucide Icons Import
+import { Play, Search, X, Download, ArrowLeft } from 'lucide-react';
 import MovieCard from '../components/MovieCard';
 import { moviePopular, movieSearch } from "../services/api";
 import "./Home.css";
@@ -11,7 +13,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activeMovie, setActiveMovie] = useState(null);
 
-  // ESC key to close player
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) setActiveMovie(null);
@@ -45,7 +46,7 @@ const Home = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      fetchMovies(search);
+      if(search) fetchMovies(search);
     }, 600);
     return () => clearTimeout(timer);
   }, [search, fetchMovies]);
@@ -68,42 +69,44 @@ const Home = () => {
   return (
     <div className="home-container">
       
-<AnimatePresence>
-  {activeMovie && (
-    <motion.div 
-      className="player-overlay"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      onClick={() => setActiveMovie(null)} 
-    >
-      {/* FIXED: Button ab container se bahar hai, isay koi block nahi kar sakta */}
-      <button className="close-player-fab" onClick={() => setActiveMovie(null)}>✕</button>
+      <AnimatePresence>
+        {activeMovie && (
+          <motion.div 
+            className="player-overlay"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            onClick={() => setActiveMovie(null)} 
+          >
+            {/* Close Icon using Lucide X */}
+            <button className="close-player-fab" onClick={() => setActiveMovie(null)}>
+              <X size={24} />
+            </button>
 
-      <div className="player-container" onClick={(e) => e.stopPropagation()}>
-        <div className="player-header">
-          <h3>{activeMovie.title}</h3>
-          <span className="quality-badge">HD 1080p</span>
-        </div>
-        
-        <div className="video-wrapper">
-          <iframe 
-            src={`https://vidsrc.me/embed/movie?tmdb=${activeMovie.id}`} 
-            frameBorder="0" 
-            allowFullScreen 
-            title="Movie Player"
-            referrerPolicy="origin"
-          ></iframe>
-        </div>
+            <div className="player-container" onClick={(e) => e.stopPropagation()}>
+              <div className="player-header">
+                <h3>{activeMovie.title}</h3>
+                <span className="quality-badge">HD 1080p</span>
+              </div>
+              
+              <div className="video-wrapper">
+                <iframe 
+                  src={`https://vidsrc.me/embed/movie?tmdb=${activeMovie.id}`} 
+                  frameBorder="0" 
+                  allowFullScreen 
+                  title="Movie Player"
+                  referrerPolicy="origin"
+                ></iframe>
+              </div>
 
-        <div className="player-footer">
-          <p>{activeMovie.overview}</p>
-          <button className="btn-dl-now" onClick={() => handleDownload(activeMovie.id, activeMovie.title)}>
-            📥 High Speed Download
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  )}
-</AnimatePresence>
+              <div className="player-footer">
+                <p>{activeMovie.overview}</p>
+                <button className="btn-dl-now" onClick={() => handleDownload(activeMovie.id, activeMovie.title)}>
+                  <Download size={18} style={{ marginRight: '8px' }} /> High Speed Download
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {featuredMovie && !activeMovie && (
         <section 
@@ -120,17 +123,23 @@ const Home = () => {
                 <div className="trending-chip"><span className="pulse"></span> Now Streaming</div>
                 <h1 className="hero-title">{featuredMovie.title}</h1>
                 <p className="hero-description">{featuredMovie.overview}</p>
-                <button className="btn-watch-main" onClick={() => setActiveMovie(featuredMovie)}>▶ Start Watching</button>
+                <button className="btn-watch-main" onClick={() => setActiveMovie(featuredMovie)}>
+                  <Play size={20} fill="currentColor" style={{ marginRight: '8px' }} /> Start Watching
+                </button>
               </motion.div>
             )}
             
             <form onSubmit={handleSearchSubmit} className={`hero-search-bar ${search ? "search-active-mode" : ""}`}>
-              <input 
-                type="search" 
-                placeholder="Search movies..." 
-                value={search} 
-                onChange={(e) => setSearch(e.target.value)} 
-              />
+              <div className="search-input-wrapper" style={{ position: 'relative', display: 'flex', alignItems: 'center', width: '100%' }}>
+                <Search size={20} className="search-icon-inside" style={{ position: 'absolute', left: '15px', color: '#64748b' }} />
+                <input 
+                  type="search" 
+                  placeholder="Search movies..." 
+                  value={search} 
+                  onChange={(e) => setSearch(e.target.value)} 
+                  style={{ paddingLeft: '45px' }}
+                />
+              </div>
               <button type="submit">Search</button>
             </form>
           </div>
@@ -151,7 +160,9 @@ const Home = () => {
               <div key={m.id} className="premium-card-wrapper" onClick={() => setActiveMovie(m)}>
                 <MovieCard movie={m} />
                 <div className="card-overlay">
-                   <div className="play-icon">▶</div>
+                   <div className="play-icon">
+                     <Play size={32} fill="currentColor" />
+                   </div>
                    <p>Click to Stream</p>
                 </div>
               </div>
@@ -159,7 +170,9 @@ const Home = () => {
           ) : (
             <div className="no-results">
                 <h3>Oops! No movies found.</h3>
-                <button className="btn-watch-main" onClick={handleGoBack}>Go Back</button>
+                <button className="btn-watch-main" onClick={handleGoBack}>
+                  <ArrowLeft size={18} style={{ marginRight: '8px' }} /> Go Back
+                </button>
             </div>
           )}
         </div>

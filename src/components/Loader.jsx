@@ -4,9 +4,14 @@ import './Loader.css';
 
 const Loader = () => {
   return (
-    <div className="loader-overlay">
+    <motion.div 
+      className="loader-overlay"
+      // Pehle screen par rahega, phir exit hote waqt upar jaye ga
+      initial={{ y: 0 }}
+      exit={{ y: "-100%" }} 
+      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }} // Custom cubic-bezier for premium feel
+    >
       <div className="loader-content">
-        {/* Cinematic Spinner */}
         <div className="spinner-viewport">
           <motion.div 
             className="main-ring"
@@ -20,7 +25,6 @@ const Loader = () => {
           />
         </div>
         
-        {/* Branding Section */}
         <div className="text-section">
           <motion.h2 
             className="brand-name"
@@ -49,10 +53,8 @@ const Loader = () => {
           </motion.p>
         </div>
       </div>
-      
-      {/* Background Ambient Glow */}
       <div className="ambient-light"></div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -203,6 +203,10 @@ body {
   background: rgba(0,0,0,0.95);
 }
 
+.search-icon-inside {
+    pointer-events: none; 
+    z-index: 10;
+}
 .player-container {
   width: 90%;
   max-width: 1100px;
