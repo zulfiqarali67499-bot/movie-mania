@@ -1,4 +1,10 @@
-/* --- Base Adjustments --- */
+:root {
+    /* Responsive Scales */
+    --loader-width: clamp(80px, 15vw, 100px);
+    --brand-size: clamp(1.4rem, 6vw, 2.2rem);
+    --track-width: clamp(140px, 40vw, 180px);
+}
+
 .loader-overlay {
     position: fixed;
     inset: 0;
@@ -8,19 +14,16 @@
     background-color: #05080d;
     z-index: 99999;
     overflow: hidden;
-    /* Mobile ke liye padding taaki content edges ko touch na kare */
-    padding: 20px;
+    padding: 20px; /* Mobile safety zone */
 }
 
-/* Background Ambient Blur - Responsive sizing */
+/* Background Ambient Blur - Scaling with screen */
 .ambient-light {
     position: absolute;
-    width: 60vw; /* Mobile par thoda bada rakha hai */
-    height: 60vw;
-    max-width: 500px; /* Desktop par limit kar diya */
-    max-height: 500px;
-    background: radial-gradient(circle, rgba(229, 9, 20, 0.08) 0%, transparent 70%);
-    filter: blur(60px);
+    width: clamp(300px, 70vw, 600px);
+    height: clamp(300px, 70vw, 600px);
+    background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
+    filter: blur(80px);
     z-index: -1;
 }
 
@@ -29,82 +32,82 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 400px;
 }
 
-/* --- Responsive Spinner --- */
+/* Premium Ring - Responsive Size */
 .spinner-viewport {
     position: relative;
-    width: 80px;  /* Mobile default */
-    height: 80px;
-    margin-bottom: 30px;
+    width: var(--loader-width);
+    height: var(--loader-width);
+    margin-bottom: clamp(20px, 5vh, 40px);
 }
 
-/* --- Typography Branding - Fluid Design --- */
+.main-ring {
+    width: 100%;
+    height: 100%;
+    border: 2px solid rgba(255, 255, 255, 0.03);
+    border-top: 2px solid #e50914;
+    border-right: 2px solid #e50914;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.2), inset 0 0 5px rgba(229, 9, 20, 0.1);
+}
+
+.inner-pulse {
+    position: absolute;
+    /* Percentage use ki hai taaki ring choti ho to pulse bhi chota ho */
+    inset: 15%; 
+    background: radial-gradient(circle, #e50914 0%, transparent 80%);
+    border-radius: 50%;
+    filter: blur(8px);
+}
+
+/* Typography Branding - Fluid and Centered */
 .brand-name {
     color: white;
-    /* clamp() function use kiya hai jo size ko screen ke mutabiq adjust karega */
-    font-size: clamp(1.5rem, 8vw, 2.2rem); 
+    font-size: var(--brand-size);
     font-weight: 900;
     margin: 0;
     text-transform: uppercase;
     font-family: 'Inter', sans-serif;
     display: flex;
-    gap: 4px;
+    gap: 0.2em; /* Em units for scaling gap */
     text-align: center;
+    letter-spacing: -0.5px;
 }
 
 .brand-name span {
     color: #e50914;
-    text-shadow: 0 0 20px rgba(229, 9, 20, 0.6);
+    text-shadow: 0 0 30px rgba(229, 9, 20, 0.6);
 }
 
-/* --- Progress Track - Responsive Width --- */
+/* Professional Progress Track - Auto-Scaling */
 .loading-track {
-    width: 100%;
-    max-width: 180px; /* Desktop limit */
-    min-width: 120px; /* Mobile limit */
+    width: var(--track-width);
     height: 2px;
     background: rgba(255, 255, 255, 0.05);
-    margin: 20px auto;
+    margin: clamp(15px, 3vh, 25px) auto;
     border-radius: 10px;
     overflow: hidden;
     position: relative;
+}
+
+.loading-fill {
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #e50914, transparent);
+    box-shadow: 0 0 10px #e50914;
 }
 
 .status-subtitle {
     color: #64748b;
     font-size: clamp(0.6rem, 2vw, 0.75rem);
     text-transform: uppercase;
-    letter-spacing: clamp(2px, 1vw, 4px);
+    letter-spacing: clamp(2px, 0.5vw, 4px);
     font-weight: 700;
+    opacity: 0.8;
 }
 
-/* --- Media Queries for Fine Tuning --- */
-
-@media (min-width: 768px) {
-    .spinner-viewport {
-        width: 100px;
-        height: 100px;
-        margin-bottom: 40px;
-    }
-    
-    .loading-track {
-        margin: 25px auto;
-    }
-}
-
-/* Landscape Mode for Mobile (Agar phone taircha ho) */
-@media (max-height: 7680px) {
-    .spinner-viewport {
-        width: 50px;
-        height: 50px;
-        margin-bottom: 15px;
-    }
-    .brand-name {
-        font-size: 1.2rem;
-    }
-    .loading-track {
-        margin: 10px auto;
-    }
+/* Landscape Phones Fix */
+@media (max-height: 768px) and (orientation: landscape) {
+    .loader-content { transform: scale(0.8); }
+    .spinner-viewport { margin-bottom: 10px; }
 }
