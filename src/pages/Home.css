@@ -24,6 +24,12 @@ body {
   overflow-x: hidden;
 }
 
+/* FIX: Jab video open ho toh background scroll hide ho jaye */
+body.modal-open {
+  overflow: hidden;
+  height: 100vh;
+}
+
 /* ==========================================================================
    2. HERO SECTION
    ========================================================================= */
@@ -188,19 +194,20 @@ body {
 .play-icon { font-size: 3rem; color: white; margin-bottom: 10px; }
 
 /* ==========================================================================
-   5. PLAYER OVERLAYS (FIXED OVERFLOW)
+   5. PLAYER OVERLAYS (SINGLE SCROLL FIX)
    ========================================================================== */
 .player-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   display: flex; flex-direction: column; 
-  justify-content: flex-start; /* Taaki top bar nazar aaye */
+  justify-content: flex-start;
   align-items: center;
   z-index: 9999;
   backdrop-filter: blur(25px);
   background: rgba(0,0,0,0.92);
-  overflow-y: auto; /* Agar screen chhoti ho toh scroll ho jaye */
-  padding: 80px 0 40px; /* Top bar ke liye space */
+  /* SINGLE SCROLL: Sirf overlay scroll hogi */
+  overflow-y: auto; 
+  padding: 100px 0 60px; 
 }
 
 .player-top-bar {
@@ -213,7 +220,7 @@ body {
   justify-content: space-between;
   align-items: center;
   z-index: 10001;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+  background: linear-gradient(to bottom, rgba(0,0,0,0.9) 20%, transparent);
 }
 
 .back-btn, .header-dl-btn {
@@ -248,10 +255,11 @@ body {
   position: relative;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  flex-shrink: 0; /* Container ko shrink hone se rokna */
+  flex-shrink: 0; 
+  margin-bottom: 20px;
 }
 
-/* HIGH SPEED BUTTON SECTION (Niche wala button) */
+/* HIGH SPEED BUTTON SECTION */
 .player-action-bar {
   padding: 15px 25px;
   background: rgba(255, 255, 255, 0.03);
@@ -309,10 +317,10 @@ body {
    6. RESPONSIVE DESIGN
    ========================================================================= */
 @media (max-width: 768px) {
-  .player-overlay { padding-top: 70px; }
+  .player-overlay { padding-top: 80px; }
   .movie-grid { grid-template-columns: 1fr 1fr; gap: 15px; }
   .player-container { width: 95%; }
-  .back-btn span, .header-dl-btn span { display: none; } /* Mobile pe sirf icons */
+  .back-btn span, .header-dl-btn span { display: none; }
 }
 
 /* Animation Fixes */

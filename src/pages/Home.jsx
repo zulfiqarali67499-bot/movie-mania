@@ -12,6 +12,17 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [activeMovie, setActiveMovie] = useState(null);
 
+  // --- FIX: Background Scroll Lock Logic ---
+  useEffect(() => {
+    if (activeMovie) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+    // Cleanup jab component band ho
+    return () => document.body.classList.remove('modal-open');
+  }, [activeMovie]);
+
   useEffect(() => {
     const handleEsc = (event) => {
       if (event.keyCode === 27) setActiveMovie(null);
@@ -72,7 +83,9 @@ const Home = () => {
         {activeMovie && (
           <motion.div 
             className="player-overlay"
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
             onClick={() => setActiveMovie(null)} 
           >
             {/* Top Navigation Bar */}
