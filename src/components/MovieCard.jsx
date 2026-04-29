@@ -9,24 +9,30 @@ const MovieCard = ({ movie, index }) => {
 
     const onFavClick = (e) => {
         e.preventDefault();
+        e.stopPropagation(); // Card click event ko rokne ke liye
         if (favorite) removeFav(movie.id);
         else addFav(movie);
     };
 
+    // Poster path check aur fallback
+    const posterUrl = movie.poster_path 
+        ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` 
+        : "https://via.placeholder.com/500x750?text=No+Poster+Found";
+
     return (
         <motion.div 
             className='movie-card'
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
-            whileHover={{ y: -10 }} // Subtle lift on hover
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.4, delay: (index % 10) * 0.05 }} // Lag-free delay
         >
             <div className="poster-container">
                 <img 
-                    src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "/default-poster.jpg"} 
+                    src={posterUrl} 
                     alt={movie.title} 
                     loading="lazy"
+                    onError={(e) => { e.target.src = "https://via.placeholder.com/500x750?text=Image+Error"; }}
                 />
                 
                 <div className="card-overlay"></div>
@@ -38,8 +44,7 @@ const MovieCard = ({ movie, index }) => {
                         aria-label="Toggle Favorite"
                     >
                         <motion.span
-                            initial={false}
-                            animate={{ scale: favorite ? [1, 1.5, 1] : 1 }}
+                            animate={{ scale: favorite ? [1, 1.4, 1] : 1 }}
                             transition={{ duration: 0.3 }}
                         >
                             {favorite ? "❤️" : "🤍"}
@@ -50,8 +55,8 @@ const MovieCard = ({ movie, index }) => {
                 <div className="movie-details">
                     <h3 title={movie.title}>{movie.title}</h3>
                     <div className="meta-info">
-                        <span className="year">{movie.release_date?.split("-")[0]}</span>
-                        <span className="rating">⭐ {movie.vote_average?.toFixed(1)}</span>
+                        <span className="year">{movie.release_date?.split("-")[0] || "N/A"}</span>
+                        <span className="rating">⭐ {movie.vote_average?.toFixed(1) || "0.0"}</span>
                     </div>
                 </div>
             </div>
