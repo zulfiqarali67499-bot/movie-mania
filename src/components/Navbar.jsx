@@ -1,55 +1,123 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Home, Heart, Clapperboard, Menu, X } from 'lucide-react'; 
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Bell, Heart, Zap, User, Menu, X } from 'lucide-react';
 import "./Navbar.css";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const navLinks = [
-    { name: "Home", path: "/", icon: <Home size={18} /> },
-    { name: "Favorites", path: "/favorite", icon: <Heart size={18} /> },
+    { name: "Discover", path: "/", icon: <Zap size={16} /> },
+    { name: "Favorites", path: "/favorite", icon: <Heart size={16} /> },
   ];
 
   return (
-    <motion.nav className="navbar" initial={{ y: -100 }} animate={{ y: 0 }}>
-      <div className="navbar-container">
-        <Link to="/" className="logo-link" onClick={() => setIsOpen(false)}>
-          <div className="logo">
-            <Clapperboard size={24} color="var(--accent-red)" fill="var(--accent-red)" fillOpacity={0.2} />
+    <>
+      <motion.header 
+        className={`navbar-wrapper ${isScrolled ? 'scrolled' : ''}`}
+        initial={{ y: -100, x: "-50%", opacity: 0 }}
+        animate={{ y: 0, x: "-50%", opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className="nav-container">
+          
+          {/* Logo */}
+          <Link to="/" className="nav-logo">
             MOVIE<span>MANIA</span>
+          </Link>
+
+          {/* Desktop Links */}
+          <nav className="desktop-only">
+            <ul className="nav-links-list">
+              {navLinks.map((link) => (
+                <li key={link.path} className="nav-li">
+                  <Link 
+                    to={link.path} 
+                    className={`nav-link-item ${location.pathname === link.path ? 'active' : ''}`}
+                  >
+                    {link.icon}
+                    <span>{link.name}</span>
+                    
+                    {location.pathname === link.path && (
+                      <motion.div 
+                        layoutId="nav-pill"
+                        className="nav-active-pill"
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          {/* Actions */}
+          <div className="nav-actions">
+            <div className="search-wrapper">
+              <Search size={16} className="search-icon" />
+              <input type="text" placeholder="Search..." />
+            </div>
+
+            <button className="action-btn">
+              <Bell size={20} />
+              <span className="notif-dot"></span>
+            </button>
+
+            <motion.div 
+              className="user-avatar"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <User size={18} color="white" />
+            </motion.div>
+            
+            <button 
+              className="mobile-toggle" 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
-        </Link>
+        </div>
+      </motion.header>
 
-        {/* Mobile Toggle Button */}
-        <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-
-        {/* Navigation Links */}
-        <ul className={`nav-links ${isOpen ? "open" : ""}`}>
-          {navLinks.map((link) => {
-            const isActive = location.pathname === link.path;
-            return (
-              <li key={link.path} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                <Link 
-                  to={link.path} 
-                  className={`nav-item ${isActive ? "active" : ""}`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {React.cloneElement(link.icon, { 
-                    color: isActive ? "var(--accent-red)" : "currentColor" 
-                  })}
-                  <span>{link.name}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </motion.nav>
+      {/* Mobile Menu Sidebar */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div 
+            className="mobile-sidebar"
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          >
+            <div className="mobile-nav-content">
+               {navLinks.map((link) => (
+                 <Link 
+                    key={link.path} 
+                    to={link.path} 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`mobile-link ${location.pathname === link.path ? 'm-active' : ''}`}
+                 >
+                    {link.icon} {link.name}
+                 </Link>
+               ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 

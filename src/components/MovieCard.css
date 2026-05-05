@@ -1,115 +1,160 @@
-.movie-card {
+.movie-card-wrapper {
+    perspective: 1200px;
+    width: 100%;
+    z-index: 1;
+}
+
+.movie-card-premium {
     position: relative;
     width: 100%;
     aspect-ratio: 2/3;
-    border-radius: 16px;
-    overflow: hidden;
-    background: #1a1f29; /* Fallback background */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    border-radius: 28px;
     cursor: pointer;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
-                box-shadow 0.4s ease;
-    will-change: transform; /* Performance boost */
+    transform-style: preserve-3d;
+    background: #0f1117;
+    transition: box-shadow 0.4s ease;
 }
 
-.movie-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(229, 9, 20, 0.3); /* Red glow effect */
-}
-
-.poster-container {
+.card-media-layer {
+    position: relative;
     width: 100%;
     height: 100%;
-    position: relative;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.poster-container img {
+.poster-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s ease;
+    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-.movie-card:hover img {
-    transform: scale(1.08); 
+.movie-card-premium:hover .poster-image {
+    transform: scale(1.1);
 }
 
-.card-overlay {
+/* --- FAVORITE BUTTON STYLING (Fixed Click) --- */
+.fav-control-layer {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        transparent 40%,
-        rgba(8, 13, 23, 0.7) 75%,
-        rgba(8, 13, 23, 1) 100%
-    );
-    opacity: 0.85;
-    transition: opacity 0.3s ease;
+    top: 15px;
+    right: 15px;
+    z-index: 200; /* Sab se upar */
+    pointer-events: auto; /* Click allow karne ke liye */
 }
 
-.movie-card:hover .card-overlay {
-    opacity: 1;
-}
-
-.favorite-action {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 10;
-}
-
-.fav-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
+.mania-fav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.fav-btn:hover {
-    background: #e50914;
-    transform: scale(1.1);
+.mania-fav-btn.active {
+    background: #fff;
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
 
-.fav-btn.active {
-    background: rgba(229, 9, 20, 0.25);
-    border-color: #e50914;
+.mania-fav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
-.movie-details {
+/* --- PREMIUM BADGE --- */
+.premium-badge {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 1.2rem;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #ff0000, #b30000);
+    padding: 6px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 900;
+    z-index: 10;
+    box-shadow: 0 8px 20px rgba(255, 0, 0, 0.3);
+}
+
+/* --- GLASS INFO PANEL --- */
+.glass-info-panel {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px;
+    border-radius: 22px;
     z-index: 5;
 }
 
-.movie-details h3 {
-    font-size: 1rem;
-    color: #ffffff;
-    margin-bottom: 5px;
+.card-title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 700;
 }
 
-.meta-info {
+.card-meta-row {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-    color: rgba(255, 255, 255, 0.6);
+    gap: 8px;
 }
 
-.rating {
-    color: #f5c518; 
-    font-weight: 800;
+.meta-tag {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 3px 10px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: #eee;
+}
+
+.rating-tag {
+    background: rgba(245, 197, 24, 0.1);
+    color: #f5c518;
+    border: 1px solid rgba(245, 197, 24, 0.2);
+}
+
+/* --- PLAY BUTTON OVERLAY --- */
+.play-trigger-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+    transition: 0.4s ease;
+    z-index: 4;
+}
+
+.movie-card-premium:hover .play-trigger-overlay {
+    opacity: 1;
+}
+
+.glass-play-circle {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
 }
