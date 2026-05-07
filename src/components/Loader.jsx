@@ -3,59 +3,73 @@ import { motion } from 'framer-motion';
 import './Loader.css';
 
 const Loader = () => {
-  const word1 = "MOVIE";
-  const word2 = "MANIA";
-
-  // International Studio Easing
-  const eliteTransition = { duration: 2.5, ease: [0.16, 1, 0.3, 1] };
+  // Hollywood "Out" Curve: Starts explosive, ends like silk
+  const cinemaCurve = [0.19, 1, 0.22, 1];
 
   return (
     <motion.div 
-      className="trending-loader"
+      className="god-tier-loader"
       exit={{ 
         opacity: 0, 
-        scale: 1.2, 
-        filter: "blur(40px)",
-        transition: { duration: 0.8 } 
+        scale: 1.1, 
+        filter: "blur(50px)",
+        transition: { duration: 1.2, ease: cinemaCurve } 
       }}
     >
-      <div className="visual-container">
+      <div className="bg-flare" />
+      
+      <motion.div 
+        className="anamorphic-beam"
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: [0, 0.8, 0.2] }}
+        transition={{ duration: 2.5, ease: cinemaCurve }}
+      />
+
+      <div className="main-stage">
         <motion.h1 
-          className="brand-text"
-          initial={{ letterSpacing: "-3rem", opacity: 0, filter: "blur(20px)" }}
-          animate={{ letterSpacing: "1.5rem", opacity: 1, filter: "blur(0px)" }}
-          transition={eliteTransition}
+          className="studio-title"
+          initial={{ letterSpacing: "-4rem", opacity: 0, filter: "blur(35px)", scale: 0.8 }}
+          animate={{ letterSpacing: "1.5rem", opacity: 1, filter: "blur(0px)", scale: 1 }}
+          transition={{ duration: 3.5, ease: cinemaCurve }}
         >
-          {word1.split("").map((char, i) => (
-            <motion.span 
-              key={i}
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: i * 0.05, ...eliteTransition }}
-            >
-              {char}
-            </motion.span>
-          ))}
-          
+          MOVIE
           <motion.span 
-            className="glitch-span"
-            initial={{ scale: 0.5, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.5, ...eliteTransition }}
+            className="accent-glow"
+            animate={{ 
+                textShadow: [
+                    "0 0 20px rgba(229,9,20,0.5)", 
+                    "0 0 60px rgba(229,9,20,0.9)", 
+                    "0 0 20px rgba(229,9,20,0.5)"
+                ] 
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
           >
-            {word2}
+            MANIA
           </motion.span>
         </motion.h1>
       </div>
 
-      <div className="loading-system">
-        <div className="progress-shimmer" />
-        <motion.p 
-          className="status-code"
-          animate={{ opacity: [0.2, 1, 0.2] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+      <div className="bottom-info">
+        <motion.div 
+          className="loading-bar-container"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: 320, opacity: 1 }}
+          transition={{ delay: 1, duration: 2 }}
         >
-          Processing_Cinema_Core
+          <motion.div 
+            className="loading-bar-fill"
+            animate={{ x: ["-100%", "200%"] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+          />
+        </motion.div>
+        
+        <motion.p 
+          className="tech-status"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2.5 }}
+        >
+          RENDERING_EXPERIENCE
         </motion.p>
       </div>
     </motion.div>

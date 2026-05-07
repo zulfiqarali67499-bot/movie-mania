@@ -1,15 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@100;900&display=swap');
 
 :root {
-    --n-red: #E50914;
-    --n-black: #000000;
-    --glitch-cyan: #00ffff;
+    --netflix-red: #E50914;
+    --white: #ffffff;
+    --void: #000000;
 }
 
-.trending-loader {
+.god-tier-loader {
     position: fixed;
     inset: 0;
-    background: var(--n-black);
+    background: var(--void);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,102 +17,93 @@
     overflow: hidden;
 }
 
-/* Atmospheric Noise Layer - Trending in 2026 */
-.trending-loader::before {
+/* Background Refraction Glow */
+.bg-flare {
+    position: absolute;
+    width: 150vw;
+    height: 100vh;
+    background: radial-gradient(circle at center, rgba(229, 9, 20, 0.12) 0%, transparent 60%);
+    filter: blur(100px);
+    z-index: 1;
+}
+
+/* Cinematic Grain Texture */
+.god-tier-loader::after {
     content: "";
     position: absolute;
     inset: 0;
-    background: url('https://grainy-gradients.vercel.app/noise.svg');
-    opacity: 0.04;
-    z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.05;
     pointer-events: none;
+    z-index: 20;
 }
 
-.visual-container {
+.main-stage {
     position: relative;
     z-index: 10;
+    text-align: center;
 }
 
-/* Hyper-Expansion Text */
-.brand-text {
+/* Kinetic Lettering */
+.studio-title {
     font-family: 'Syncopate', sans-serif;
-    font-size: clamp(2rem, 12vw, 6rem);
+    font-size: clamp(2rem, 15vw, 7.5rem);
     font-weight: 700;
-    color: white;
+    color: var(--white);
     text-transform: uppercase;
     display: flex;
-    gap: 0.1em;
-    letter-spacing: -2rem; /* Initial State */
+    align-items: center;
+    gap: 0.05em;
+    perspective: 1000px;
 }
 
-/* Chromatic Aberration Effect */
-.glitch-span {
-    color: var(--n-red);
+.accent-glow {
+    color: var(--netflix-red);
     position: relative;
-    display: inline-block;
+    text-shadow: 0 0 50px rgba(229, 9, 20, 0.8);
 }
 
-.glitch-span::before, .glitch-span::after {
-    content: "MANIA";
+/* The Secret 10/10 Element: Anamorphic Line */
+.anamorphic-beam {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.7;
+    width: 200%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--netflix-red), #fff, var(--netflix-red), transparent);
+    filter: blur(2px);
+    opacity: 0.6;
+    z-index: 15;
 }
 
-.glitch-span::before {
-    color: var(--glitch-cyan);
-    z-index: -1;
-    animation: glitch-anim 0.3s infinite;
-}
-
-@keyframes glitch-anim {
-    0% { transform: translate(0); }
-    20% { transform: translate(-2px, 2px); }
-    40% { transform: translate(-2px, -2px); }
-    60% { transform: translate(2px, 2px); }
-    80% { transform: translate(2px, -2px); }
-    100% { transform: translate(0); }
-}
-
-.loading-system {
+.bottom-info {
     position: absolute;
     bottom: 8%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    gap: 1.5rem;
 }
 
-.progress-shimmer {
-    width: 250px;
+.loading-bar-container {
+    width: 320px;
     height: 1px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     position: relative;
     overflow: hidden;
 }
 
-.progress-shimmer::after {
-    content: "";
+.loading-bar-fill {
     position: absolute;
     inset: 0;
-    width: 50%;
-    background: linear-gradient(90deg, transparent, var(--n-red), transparent);
-    animation: loading-bar 2s infinite linear;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--netflix-red), transparent);
 }
 
-@keyframes loading-bar {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(250%); }
-}
-
-.status-code {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 10px;
+.tech-status {
+    font-family: 'Inter', sans-serif;
+    font-size: 8px;
+    font-weight: 900;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 1rem;
+    letter-spacing: 2rem;
     text-transform: uppercase;
-    margin-right: -1rem;
+    margin-right: -2rem;
 }
