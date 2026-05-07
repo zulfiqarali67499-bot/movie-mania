@@ -3,57 +3,61 @@ import { motion } from 'framer-motion';
 import './Loader.css';
 
 const Loader = () => {
+  const word1 = "MOVIE";
+  const word2 = "MANIA";
+
+  // International Studio Easing
+  const eliteTransition = { duration: 2.5, ease: [0.16, 1, 0.3, 1] };
+
   return (
     <motion.div 
-      className="loader-overlay"
-      // Pehle screen par rahega, phir exit hote waqt upar jaye ga
-      initial={{ y: 0 }}
-      exit={{ y: "-100%" }} 
-      transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }} // Custom cubic-bezier for premium feel
+      className="trending-loader"
+      exit={{ 
+        opacity: 0, 
+        scale: 1.2, 
+        filter: "blur(40px)",
+        transition: { duration: 0.8 } 
+      }}
     >
-      <div className="loader-content">
-        <div className="spinner-viewport">
-          <motion.div 
-            className="main-ring"
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 1.2, ease: "linear" }}
-          />
-          <motion.div 
-            className="inner-pulse"
-            animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          />
-        </div>
-        
-        <div className="text-section">
-          <motion.h2 
-            className="brand-name"
-            initial={{ letterSpacing: "10px", opacity: 0 }}
-            animate={{ letterSpacing: "2px", opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+      <div className="visual-container">
+        <motion.h1 
+          className="brand-text"
+          initial={{ letterSpacing: "-3rem", opacity: 0, filter: "blur(20px)" }}
+          animate={{ letterSpacing: "1.5rem", opacity: 1, filter: "blur(0px)" }}
+          transition={eliteTransition}
+        >
+          {word1.split("").map((char, i) => (
+            <motion.span 
+              key={i}
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: i * 0.05, ...eliteTransition }}
+            >
+              {char}
+            </motion.span>
+          ))}
+          
+          <motion.span 
+            className="glitch-span"
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5, ...eliteTransition }}
           >
-            MOVIE<span>MANIA</span>
-          </motion.h2>
-
-          <div className="loading-track">
-            <motion.div 
-              className="loading-fill"
-              initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            />
-          </div>
-
-          <motion.p 
-            className="status-subtitle"
-            animate={{ opacity: [0.4, 1, 0.4] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            Preparing Your Feature Presentation
-          </motion.p>
-        </div>
+            {word2}
+          </motion.span>
+        </motion.h1>
       </div>
-      <div className="ambient-light"></div>
+
+      <div className="loading-system">
+        <div className="progress-shimmer" />
+        <motion.p 
+          className="status-code"
+          animate={{ opacity: [0.2, 1, 0.2] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          Processing_Cinema_Core
+        </motion.p>
+      </div>
     </motion.div>
   );
 };

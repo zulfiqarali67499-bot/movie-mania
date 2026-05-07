@@ -1,113 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300;700&display=swap');
+
 :root {
-    /* Responsive Scales */
-    --loader-width: clamp(80px, 15vw, 100px);
-    --brand-size: clamp(1.4rem, 6vw, 2.2rem);
-    --track-width: clamp(140px, 40vw, 180px);
+    --n-red: #E50914;
+    --n-black: #000000;
+    --glitch-cyan: #00ffff;
 }
 
-.loader-overlay {
+.trending-loader {
     position: fixed;
     inset: 0;
+    background: var(--n-black);
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #05080d;
-    z-index: 99999;
+    z-index: 10000000;
     overflow: hidden;
-    padding: 20px; /* Mobile safety zone */
 }
 
-/* Background Ambient Blur - Scaling with screen */
-.ambient-light {
+/* Atmospheric Noise Layer - Trending in 2026 */
+.trending-loader::before {
+    content: "";
     position: absolute;
-    width: clamp(300px, 70vw, 600px);
-    height: clamp(300px, 70vw, 600px);
-    background: radial-gradient(circle, rgba(229, 9, 20, 0.1) 0%, transparent 70%);
-    filter: blur(80px);
-    z-index: -1;
+    inset: 0;
+    background: url('https://grainy-gradients.vercel.app/noise.svg');
+    opacity: 0.04;
+    z-index: 5;
+    pointer-events: none;
 }
 
-.loader-content {
+.visual-container {
+    position: relative;
+    z-index: 10;
+}
+
+/* Hyper-Expansion Text */
+.brand-text {
+    font-family: 'Syncopate', sans-serif;
+    font-size: clamp(2rem, 12vw, 6rem);
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    display: flex;
+    gap: 0.1em;
+    letter-spacing: -2rem; /* Initial State */
+}
+
+/* Chromatic Aberration Effect */
+.glitch-span {
+    color: var(--n-red);
+    position: relative;
+    display: inline-block;
+}
+
+.glitch-span::before, .glitch-span::after {
+    content: "MANIA";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
+
+.glitch-span::before {
+    color: var(--glitch-cyan);
+    z-index: -1;
+    animation: glitch-anim 0.3s infinite;
+}
+
+@keyframes glitch-anim {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+.loading-system {
+    position: absolute;
+    bottom: 8%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    gap: 15px;
 }
 
-/* Premium Ring - Responsive Size */
-.spinner-viewport {
+.progress-shimmer {
+    width: 250px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
     position: relative;
-    width: var(--loader-width);
-    height: var(--loader-width);
-    margin-bottom: clamp(20px, 5vh, 40px);
-}
-
-.main-ring {
-    width: 100%;
-    height: 100%;
-    border: 2px solid rgba(255, 255, 255, 0.03);
-    border-top: 2px solid #e50914;
-    border-right: 2px solid #e50914;
-    border-radius: 50%;
-    box-shadow: 0 0 15px rgba(229, 9, 20, 0.2), inset 0 0 5px rgba(229, 9, 20, 0.1);
-}
-
-.inner-pulse {
-    position: absolute;
-    /* Percentage use ki hai taaki ring choti ho to pulse bhi chota ho */
-    inset: 15%; 
-    background: radial-gradient(circle, #e50914 0%, transparent 80%);
-    border-radius: 50%;
-    filter: blur(8px);
-}
-
-/* Typography Branding - Fluid and Centered */
-.brand-name {
-    color: white;
-    font-size: var(--brand-size);
-    font-weight: 900;
-    margin: 0;
-    text-transform: uppercase;
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    gap: 0.2em; /* Em units for scaling gap */
-    text-align: center;
-    letter-spacing: -0.5px;
-}
-
-.brand-name span {
-    color: #e50914;
-    text-shadow: 0 0 30px rgba(229, 9, 20, 0.6);
-}
-
-/* Professional Progress Track - Auto-Scaling */
-.loading-track {
-    width: var(--track-width);
-    height: 2px;
-    background: rgba(255, 255, 255, 0.05);
-    margin: clamp(15px, 3vh, 25px) auto;
-    border-radius: 10px;
     overflow: hidden;
-    position: relative;
 }
 
-.loading-fill {
-    height: 100%;
-    background: linear-gradient(90deg, transparent, #e50914, transparent);
-    box-shadow: 0 0 10px #e50914;
+.progress-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 50%;
+    background: linear-gradient(90deg, transparent, var(--n-red), transparent);
+    animation: loading-bar 2s infinite linear;
 }
 
-.status-subtitle {
-    color: #64748b;
-    font-size: clamp(0.6rem, 2vw, 0.75rem);
+@keyframes loading-bar {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(250%); }
+}
+
+.status-code {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 1rem;
     text-transform: uppercase;
-    letter-spacing: clamp(2px, 0.5vw, 4px);
-    font-weight: 700;
-    opacity: 0.8;
-}
-
-/* Landscape Phones Fix */
-@media (max-height: 768px) and (orientation: landscape) {
-    .loader-content { transform: scale(0.8); }
-    .spinner-viewport { margin-bottom: 10px; }
+    margin-right: -1rem;
 }
