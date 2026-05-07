@@ -30,11 +30,6 @@ const MovieCard = ({ movie, index }) => {
         y.set(0);
     };
 
-    const onFavClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation(); 
-        favorite ? removeFav(movie.id) : addFav(movie);
-    };
 
     return (
         <motion.div 

@@ -1,154 +1,159 @@
+/* --- Global Container --- */
 .favorite-page {
-    background-color: var(--primary-bg);
     min-height: 100vh;
-    padding-top: 100px; /* Space for navbar */
+    background: #050505;
+    padding: 130px 8% 80px;
 }
 
-.favorite-container {
-    padding: 0 8% 50px 8%;
+/* --- Premium Header & Counter --- */
+.favorite-header-main {
+    margin-bottom: 50px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 25px;
 }
 
-.header-flex {
+.premium-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin: 0;
+}
+
+.premium-title span {
+    color: #e50914; /* Netflix Red */
+    font-weight: 200;
+}
+
+.collection-stats {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    padding-bottom: 20px;
-}
-
-.page-title {
-    color: var(--text-main);
-    font-size: 2.2rem;
-    font-weight: 800;
-}
-
-.page-title span {
-    color: var(--accent-red);
-}
-
-.count-badge {
-    background: rgba(229, 9, 20, 0.1);
-    color: var(--accent-red);
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    border: 1px solid var(--accent-red);
-}
-
-/* Empty State Modern UI */
-.empty-favorite {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    height: 70vh;
+    gap: 12px;
+    margin-top: 10px;
+    background: rgba(229, 9, 20, 0.1);
+    width: fit-content;
+    padding: 8px 20px;
+    border-radius: 50px;
+    border: 1px solid rgba(229, 9, 20, 0.3);
 }
 
-.empty-card {
-    background: linear-gradient(145deg, rgba(30, 41, 59, 0.4), rgba(15, 23, 42, 0.6));
+.collection-stats span {
+    color: #eee;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* --- Movie Grid Architecture --- */
+.static-movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 35px;
+}
+
+.movie-tile-premium {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.movie-tile-premium:hover {
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+}
+
+.watchlist-btn-overlay {
+    position: absolute;
+    top: 15px; right: 15px;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    cursor: pointer;
+}
+
+.watchlist-btn-overlay:hover { background: #000; transform: scale(1.1); }
+
+/* --- HEARTBEAT & EMPTY STATE --- */
+.empty-state-container {
+    display: flex; justify-content: center; align-items: center;
+    min-height: 50vh;
+}
+
+.empty-box-glass {
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 60px 40px;
-    border-radius: 32px;
+    border-radius: 30px;
     text-align: center;
     max-width: 450px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-.empty-card .icon {
-    font-size: 5rem;
-    margin-bottom: 25px;
-    filter: drop-shadow(0 0 15px rgba(229, 9, 20, 0.4));
+.animated-heart-wrapper {
+    position: relative; margin-bottom: 30px;
+    display: flex; justify-content: center;
 }
 
-.empty-card h2 {
-    color: var(--text-main);
-    font-size: 1.7rem;
-    margin-bottom: 15px;
-    letter-spacing: -0.5px;
+.floating-heart {
+    animation: heartbeat 1.5s ease-in-out infinite;
+    filter: drop-shadow(0 0 10px #e50914);
 }
 
-.empty-card p {
-    color: var(--text-muted);
-    font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 35px;
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.2); }
+    40% { transform: scale(1); }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
-.back-home-btn {
-    padding: 14px 40px;
-    background: linear-gradient(to right, var(--accent-red), var(--accent-red-light));
-    color: white;
-    text-decoration: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 1rem;
-    box-shadow: 0 10px 25px var(--accent-glow);
-    transition: var(--transition-smooth);
+.heart-pulse-ring {
+    position: absolute; width: 60px; height: 60px;
+    border: 2px solid #e50914; border-radius: 50%;
+    animation: ringPulse 2s linear infinite; opacity: 0;
 }
 
-.back-home-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px var(--accent-glow);
+@keyframes ringPulse {
+    0% { transform: scale(1); opacity: 0.5; }
+    100% { transform: scale(2.5); opacity: 0; }
 }
 
+.explore-btn-premium {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #e50914; color: white; text-decoration: none;
+    padding: 15px 35px; border-radius: 50px; font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.explore-btn-premium:hover { background: white; color: #e50914; transform: scale(1.05); }
+
+/* --- VIDEO PLAYER MODAL --- */
+.ultra-modal-overlay {
+    position: fixed; inset: 0; z-index: 10000;
+    background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.modal-container {
+    width: 95%; max-width: 1200px; border-radius: 30px;
+    overflow: hidden; position: relative;
+}
+
+.player-mode { height: 85vh; background: #000; }
+.full-player-frame { width: 100%; height: 100%; border: none; }
+
+.s-btn.active { background: #e50914; border-color: #e50914; }
+.play-main-btn { background: #e50914; color: white; border: none; padding: 12px 30px; border-radius: 5px; font-weight: 800; cursor: pointer; }
+
+/* Responsive Grid */
 @media (max-width: 768px) {
-    .favorite-page {
-        padding-top: 80px; 
-    }
- .favorite-container {
-        padding: 0 5% 50px 5%;
-    }
-    .header-flex {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 15px;
-        margin-bottom: 30px;
-    }
-
-    .page-title {
-        font-size: 1.8rem; 
-    }
-
-    .count-badge {
-        font-size: 0.8rem;
-        padding: 4px 12px;
-    }
-
-    .empty-card {
-        padding: 40px 25px;
-        margin: 0 20px;
-        border-radius: 24px;
-    }
-
-    .empty-card .icon {
-        font-size: 4rem;
-    }
-
-    .empty-card h2 {
-        font-size: 1.4rem;
-    }
-
-    .empty-card p {
-        font-size: 0.9rem;
-        margin-bottom: 25px;
-    }
-
-    .back-home-btn {
-        padding: 12px 30px;
-        font-size: 0.95rem;
-        display: inline-block;
-    }
-    .page-title {
-        font-size: 1.5rem;
-    }
-
-    .favorite-container {
-        padding: 0 15px 40px 15px;
-    }
-    
-    .empty-favorite {
-        height: 60vh; 
-    }
+    .premium-title { font-size: 2.2rem; }
+    .static-movie-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
 }
