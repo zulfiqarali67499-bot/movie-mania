@@ -1,76 +1,73 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import './Loader.css';
+// import clientLogo from '../assets/client-logo.svg'; // If using an image/svg
 
 const Loader = () => {
-  // Hollywood "Out" Curve: Starts explosive, ends like silk
-  const cinemaCurve = [0.19, 1, 0.22, 1];
+  const [progress, setProgress] = useState(0);
+
+  // 100% Loading Logic
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => (prev < 100 ? prev + 1 : 100));
+    }, 20); // Slightly faster for smoother feel
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <motion.div 
-      className="god-tier-loader"
-      exit={{ 
-        opacity: 0, 
-        scale: 1.1, 
-        filter: "blur(50px)",
-        transition: { duration: 1.2, ease: cinemaCurve } 
-      }}
+      className="god-mode-loader"
+      exit={{ opacity: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }}
     >
-      <div className="bg-flare" />
-      
-      <motion.div 
-        className="anamorphic-beam"
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: [0, 0.8, 0.2] }}
-        transition={{ duration: 2.5, ease: cinemaCurve }}
-      />
-
       <div className="main-stage">
-        <motion.h1 
-          className="studio-title"
-          initial={{ letterSpacing: "-4rem", opacity: 0, filter: "blur(35px)", scale: 0.8 }}
-          animate={{ letterSpacing: "1.5rem", opacity: 1, filter: "blur(0px)", scale: 1 }}
-          transition={{ duration: 3.5, ease: cinemaCurve }}
-        >
-          MOVIE
-          <motion.span 
-            className="accent-glow"
-            animate={{ 
-                textShadow: [
-                    "0 0 20px rgba(229,9,20,0.5)", 
-                    "0 0 60px rgba(229,9,20,0.9)", 
-                    "0 0 20px rgba(229,9,20,0.5)"
-                ] 
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            MANIA
-          </motion.span>
-        </motion.h1>
-      </div>
-
-      <div className="bottom-info">
-        <motion.div 
-          className="loading-bar-container"
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: 320, opacity: 1 }}
-          transition={{ delay: 1, duration: 2 }}
-        >
+        {/* 1. ROTATING CINEMATIC CIRCLE CONTAINER */}
+        <div className="circle-container">
           <motion.div 
-            className="loading-bar-fill"
-            animate={{ x: ["-100%", "200%"] }}
-            transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-          />
-        </motion.div>
-        
-        <motion.p 
-          className="tech-status"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2.5 }}
-        >
-          RENDERING_EXPERIENCE
-        </motion.p>
+            className="rotating-ring"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+          >
+            {/* Minimalist gradient on the ring itself */}
+            <div className="ring-gradient"></div>
+          </motion.div>
+
+          {/* New LOGO SLOT: Stays static in the center */}
+          <div className="logo-slot">
+            {/* Option A: Your actual logo (Image or SVG) */}
+            {/* <img src={clientLogo} alt="Client Logo" className="actual-logo" /> */}
+            
+            {/* Option B: Text-based Logo Placeholder (MM) */}
+            <span className="logo-text-placeholder">M</span>
+          </div>
+        </div>
+
+        {/* 2. SHINE TITLE EFFECT */}
+        <div className="title-wrapper">
+          <h1 className="shine-title">
+            MOVIE MANIA
+          </h1>
+        </div>
+
+        {/* 3. PERCENTAGE INDICATOR & PROGRESS BAR */}
+        <div className="loading-meta">
+          <motion.div 
+            className="percentage-text"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            {progress}% <span>LOADING</span>
+          </motion.div>
+          
+          <div className="progress-track">
+            <motion.div 
+              className="progress-bar" 
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              // Uses easeOut for natural decelerating feel as it gets full
+              transition={{ ease: [0.16, 1, 0.3, 1] }} 
+            />
+          </div>
+        </div>
       </div>
     </motion.div>
   );

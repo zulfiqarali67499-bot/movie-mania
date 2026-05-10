@@ -1,109 +1,159 @@
-@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@100;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Grotesk:wght@300&display=swap');
 
+/* Basic Colors and Overall Container */
 :root {
-    --netflix-red: #E50914;
-    --white: #ffffff;
-    --void: #000000;
+  --brand-red: #E50914; /* Netflix-like Cinematic Red */
+  --silver-white: #ffffff;
+  --bg-dark: #000000;
+  --glass: rgba(255, 255, 255, 0.05);
+  --ring-size: min(150px, 30vw); /* Responsive size of the circle */
 }
 
-.god-tier-loader {
+.god-mode-loader {
     position: fixed;
     inset: 0;
-    background: var(--void);
+    background: var(--bg-dark);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10000000;
-    overflow: hidden;
-}
-
-/* Background Refraction Glow */
-.bg-flare {
-    position: absolute;
-    width: 150vw;
-    height: 100vh;
-    background: radial-gradient(circle at center, rgba(229, 9, 20, 0.12) 0%, transparent 60%);
-    filter: blur(100px);
-    z-index: 1;
-}
-
-/* Cinematic Grain Texture */
-.god-tier-loader::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.05;
-    pointer-events: none;
-    z-index: 20;
+    z-index: 999999;
 }
 
 .main-stage {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-}
-
-/* Kinetic Lettering */
-.studio-title {
-    font-family: 'Syncopate', sans-serif;
-    font-size: clamp(2rem, 15vw, 7.5rem);
-    font-weight: 700;
-    color: var(--white);
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 0.05em;
-    perspective: 1000px;
-}
-
-.accent-glow {
-    color: var(--netflix-red);
-    position: relative;
-    text-shadow: 0 0 50px rgba(229, 9, 20, 0.8);
-}
-
-/* The Secret 10/10 Element: Anamorphic Line */
-.anamorphic-beam {
-    position: absolute;
-    width: 200%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--netflix-red), #fff, var(--netflix-red), transparent);
-    filter: blur(2px);
-    opacity: 0.6;
-    z-index: 15;
-}
-
-.bottom-info {
-    position: absolute;
-    bottom: 8%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: min(3rem, 6vw); /* Responsive spacing between elements */
 }
 
-.loading-bar-container {
-    width: 320px;
-    height: 1px;
+/* --- 1. CIRCLE & LOGO CONTAINER --- */
+.circle-container {
+    position: relative;
+    width: var(--ring-size);
+    height: var(--ring-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Rotating Ring */
+.rotating-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    /* Thin elegant border with primary accent at top */
+    border: 1px solid rgba(255, 255, 255, 0.03); 
+    border-top: 1.5px solid var(--brand-red); 
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.1); /* Subtle glowing halo */
+}
+
+.ring-gradient {
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 50%;
+  /* Optional gradient mask effect on the ring */
+  background: linear-gradient(135deg, var(--brand-red) 0%, transparent 40%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+}
+
+/* Logo Slot (Static Center) */
+.logo-slot {
+    position: relative;
+    width: 60%; /* Logo size relative to the ring */
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Above the rotating ring */
+}
+
+.logo-text-placeholder {
+    font-family: 'Syncopate', sans-serif;
+    color: var(--silver-white);
+    font-size: min(2rem, 5vw);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); /* Glow on logo */
+}
+
+/* If using an actual logo image */
+.actual-logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* --- 2. SHINE TITLE (Preserved) --- */
+.shine-title {
+    font-family: 'Syncopate', sans-serif;
+    font-size: clamp(1.4rem, 5.5vw, 4rem); /* Balanced text size */
+    color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(
+        to right, 
+        rgba(255,255,255,0.1) 0%, 
+        rgba(255,255,255,1) 50%, 
+        rgba(255,255,255,0.1) 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textShine 3.5s linear infinite; /* Smooth shine */
+    letter-spacing: clamp(0.4rem, 1.2vw, 0.9rem); /* Dynamic wide letters */
+}
+
+@keyframes textShine {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+}
+
+/* --- 3. LOADING METADATA (Preserved & Polished) --- */
+.loading-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.percentage-text {
+    font-family: 'Space Grotesk', sans-serif;
+    color: white;
+    font-size: 13px;
+    letter-spacing: 3px;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+.percentage-text span {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 10px;
+    margin-left: 8px;
+    font-weight: 300;
+}
+
+.progress-track {
+    width: 220px;
+    height: 1.5px; /* Extremely thin high-tech line */
     background: rgba(255, 255, 255, 0.05);
     position: relative;
+    border-radius: 4px;
     overflow: hidden;
 }
 
-.loading-bar-fill {
+.progress-bar {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    background: linear-gradient(90deg, transparent, var(--netflix-red), transparent);
+    height: 100%;
+    background: var(--brand-red);
+    box-shadow: 0 0 10px var(--brand-red);
+    border-radius: 4px;
 }
 
-.tech-status {
-    font-family: 'Inter', sans-serif;
-    font-size: 8px;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 2rem;
-    text-transform: uppercase;
-    margin-right: -2rem;
+/* Simple responsiveness for narrow screens */
+@media (max-width: 480px) {
+    .main-stage { gap: 2rem; }
+    .percentage-text { font-size: 11px; letter-spacing: 2px; }
+    .loading-meta span { font-size: 8px; }
+    .progress-track { width: 160px; }
 }
