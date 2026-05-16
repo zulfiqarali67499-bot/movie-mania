@@ -1,49 +1,44 @@
-/* MovieCard.css - International Standard Polish */
+/* MovieCard.css - International Standard */
 
 :root {
     --primary-red: #E50914;
-    --glass-bg: rgba(13, 17, 23, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --card-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    --glass-bg: rgba(13, 17, 23, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.12);
+    --card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
 }
 
 .movie-card-wrapper {
-    perspective: 2000px; /* Enhanced depth for 3D tilt */
+    perspective: 1500px; /* Depth for 3D tilt */
     width: 100%;
-    margin-bottom: 20px;
 }
 
 .movie-card-premium {
     position: relative;
     width: 100%;
     aspect-ratio: 2/3;
-    border-radius: 24px;
+    border-radius: 20px;
     cursor: pointer;
     background: #121212;
-    transition: box-shadow 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+    transition: box-shadow 0.5s ease;
     transform-style: preserve-3d;
-    will-change: transform; /* Hardware acceleration for 60FPS */
+    will-change: transform;
 }
 
-.movie-card-premium:hover {
-    box-shadow: var(--card-shadow);
-}
-
-/* SILVER SHINE SWEEP EFFECT */
+/* SILVER SHINE SWEEP */
 .movie-card-premium::after {
     content: "";
     position: absolute;
     inset: 0;
     background: linear-gradient(
-        125deg, 
+        110deg, 
         transparent 0%, 
-        rgba(255, 255, 255, 0.05) 45%, 
-        rgba(255, 255, 255, 0.2) 50%, 
-        rgba(255, 255, 255, 0.05) 55%, 
+        rgba(255, 255, 255, 0) 40%, 
+        rgba(255, 255, 255, 0.15) 50%, 
+        rgba(255, 255, 255, 0) 60%, 
         transparent 100%
     );
     transform: translateX(-100%);
-    transition: 0.7s cubic-bezier(0.2, 1, 0.3, 1);
+    transition: 0.8s cubic-bezier(0.2, 1, 0.3, 1);
     z-index: 5;
     pointer-events: none;
 }
@@ -56,42 +51,32 @@
     position: relative;
     width: 100%;
     height: 100%;
-    border-radius: 24px;
+    border-radius: 20px;
     overflow: hidden;
     border: 1px solid var(--glass-border);
-    background: #1a1a1a;
+    background: #0f172a;
 }
 
 .poster-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.2, 1, 0.3, 1);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .movie-card-premium:hover .poster-image {
-    transform: scale(1.1);
-    filter: brightness(0.6) blur(2px);
-}
-
-/* FALLBACK IMAGE STYLE */
-.fallback-image {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    transform: scale(1.08);
+    filter: brightness(0.5) blur(1px);
 }
 
 /* PREMIUM BADGE */
 .premium-badge {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 12px;
+    left: 12px;
     background: var(--primary-red);
-    padding: 6px 14px;
-    border-radius: 10px;
+    padding: 5px 12px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 6px;
@@ -99,9 +84,7 @@
     font-size: 0.65rem;
     font-weight: 800;
     z-index: 10;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 16px rgba(229, 9, 20, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
 }
 
 /* CINEMATIC OVERLAY */
@@ -110,9 +93,9 @@
     inset: 0;
     background: linear-gradient(
         to top, 
-        rgba(0, 0, 0, 0.95) 0%, 
-        rgba(0, 0, 0, 0.4) 40%,
-        transparent 70%
+        rgba(0, 0, 0, 0.9) 0%, 
+        rgba(0, 0, 0, 0.2) 50%,
+        transparent 100%
     );
     z-index: 2;
 }
@@ -120,109 +103,73 @@
 /* GLASS INFO PANEL */
 .glass-info-panel {
     position: absolute;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
     background: var(--glass-bg);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
-    padding: 15px;
-    border-radius: 20px;
+    padding: 12px;
+    border-radius: 16px;
     z-index: 4;
+    transition: transform 0.4s ease;
 }
 
 .card-title {
     color: white;
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .card-meta-row {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .meta-tag {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     background: rgba(255, 255, 255, 0.08);
-    padding: 4px 10px;
-    border-radius: 8px;
-    font-size: 0.75rem;
-    color: #e2e8f0;
-    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    color: #cbd5e1;
 }
 
 .rating-tag {
-    background: rgba(255, 215, 0, 0.15);
-    color: #ffcc00;
-    border: 1px solid rgba(255, 215, 0, 0.1);
+    background: rgba(255, 215, 0, 0.1);
+    color: #fbbf24;
 }
 
-/* PLAY BUTTON OVERLAY */
+/* PLAY BUTTON */
 .play-trigger-overlay {
     position: absolute;
-    top: 45%; /* Slightly above center for visual balance */
+    top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
     opacity: 0;
     z-index: 3;
-    transition: all 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+    transition: all 0.4s ease;
 }
 
 .movie-card-premium:hover .play-trigger-overlay {
     opacity: 1;
-    top: 50%;
 }
 
 .glass-play-circle {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
+    width: 54px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid rgba(255, 255, 255, 0.4);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
-    color: white;
-}
-
-/* MOBILE OPTIMIZATIONS */
-@media (max-width: 768px) {
-    .movie-card-premium {
-        border-radius: 18px;
-    }
-    .card-media-layer {
-        border-radius: 18px;
-    }
-    .glass-info-panel {
-        padding: 10px;
-        border-radius: 14px;
-        bottom: 8px;
-        left: 8px;
-        right: 8px;
-    }
-    .card-title {
-        font-size: 0.9rem;
-    }
-    .meta-tag {
-        font-size: 0.65rem;
-        padding: 3px 6px;
-    }
-    .premium-badge {
-        font-size: 0.55rem;
-        padding: 4px 10px;
-    }
-    .glass-play-circle {
-        width: 45px;
-        height: 45px;
-    }
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }

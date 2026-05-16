@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useRef, useLayoutEffect } from
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Play, Search, X, Star, TrendingUp, Award, Heart, Plus, Video, 
-  PlayCircle, ChevronLeft, Clock, Flame, ImageOff, ShieldAlert
+  PlayCircle, ChevronLeft, Clock, Flame, ShieldCheck
 } from 'lucide-react';
 
 // Swiper
@@ -26,7 +26,10 @@ const MovieItem = ({ m, isFav, onFavToggle, onOpen }) => (
     <MovieCard movie={m} />
     <button 
       className="watchlist-btn-overlay" 
-      onClick={(e) => onFavToggle(e, m)}
+      onClick={(e) => {
+        e.stopPropagation();
+        onFavToggle(m);
+      }}
     >
       <Heart 
         size={18} 
@@ -57,7 +60,20 @@ const Home = () => {
   const [player, setPlayer] = useState({ isPlaying: false, isTrailer: false, server: 1 });
   const playerSectionRef = useRef(null);
 
-  // Smooth Scroll to Player
+  // --- NEW: Watch History Saver ---
+  const saveToWatchHistory = (movie) => {
+    const movieData = {
+      id: movie.id,
+      title: movie.title || movie.name,
+      poster_path: movie.poster_path,
+      watchedAt: new Date().toISOString()
+    };
+    const history = JSON.parse(localStorage.getItem('mm_history') || "[]");
+    // Purani entries filter karein taake duplicate na ho aur latest upar aaye
+    const updatedHistory = [movieData, ...history.filter(m => m.id !== movie.id)].slice(0, 15);
+    localStorage.setItem('mm_history', JSON.stringify(updatedHistory));
+  };
+
   useLayoutEffect(() => {
     if ((player.isPlaying || player.isTrailer) && playerSectionRef.current) {
       setTimeout(() => {
@@ -66,7 +82,6 @@ const Home = () => {
     }
   }, [player.isPlaying, player.isTrailer]);
 
-  // Optimized Data Fetching
   const fetchAllData = useCallback(async () => {
     setLoading(true);
     try {
@@ -106,6 +121,10 @@ const Home = () => {
     setActiveMovie(movie);
     setMovieExtraInfo(null);
     setPlayer({ isPlaying: false, isTrailer: false, server: 1 });
+    
+    // Save to History when movie modal opens
+    saveToWatchHistory(movie);
+
     try {
       const details = await getMovieDetails(movie.id);
       setMovieExtraInfo(details);
@@ -140,7 +159,15 @@ const Home = () => {
       </div>
       {isGrid ? (
         <div className="static-movie-grid">
-          {movies.map(m => <MovieItem key={m.id} m={m} isFav={isFav} onFavToggle={(e) => { e.stopPropagation(); isFav(m.id) ? removeFav(m.id) : addFav(m); }} onOpen={openMovieDetails} />)}
+          {movies.map(m => (
+            <MovieItem 
+              key={m.id} 
+              m={m} 
+              isFav={isFav} 
+              onFavToggle={(movie) => isFav(movie.id) ? removeFav(movie.id) : addFav(movie)} 
+              onOpen={openMovieDetails} 
+            />
+          ))}
         </div>
       ) : (
         <Swiper 
@@ -151,7 +178,12 @@ const Home = () => {
         >
           {movies.map(m => (
             <SwiperSlide key={m.id}>
-              <MovieItem m={m} isFav={isFav} onFavToggle={(e) => { e.stopPropagation(); isFav(m.id) ? removeFav(m.id) : addFav(m); }} onOpen={openMovieDetails} />
+              <MovieItem 
+                m={m} 
+                isFav={isFav} 
+                onFavToggle={(movie) => isFav(movie.id) ? removeFav(movie.id) : addFav(movie)} 
+                onOpen={openMovieDetails} 
+              />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -161,7 +193,6 @@ const Home = () => {
 
   return (
     <div className="app-canvas">
-      {/* Dynamic Navbar Logic included in Search Bar */}
       <div className="search-overlay-container">
         <form className="search-pill big-search" onSubmit={handleSearch}>
           <Search size={22} color="#e50914" />
@@ -210,7 +241,7 @@ const Home = () => {
         {loading && <div className="loader-box"><div className="spinner"></div><p>LOADING CINEMA</p></div>}
         
         {isSearching ? (
-          renderSection(`Search Results`, searchResults, Search, true)
+          renderSection(`Results for "${search}"`, searchResults, Search, true)
         ) : (
           <>
             {renderSection("Trending Now", data.trending, TrendingUp)}
@@ -241,10 +272,34 @@ const Home = () => {
                       <div className="badge-row">
                         <span className="rating-badge"><Star size={16} fill="gold" color="gold"/> {activeMovie.vote_average?.toFixed(1)}</span>
                         <span className="quality-tag">4K HDR</span>
+                        <span className="year-tag">{(activeMovie.release_date || activeMovie.first_air_date)?.split('-')[0]}</span>
                       </div>
                       <h1>{activeMovie.title || activeMovie.name}</h1>
+                      
+                      {/* Genres Section */}
+                      <div className="genre-pills">
+                        {movieExtraInfo?.genres?.map(g => (
+                          <span key={g.id} className="pill">{g.name}</span>
+                        ))}
+                      </div>
+
                       <p className="synopsis">{activeMovie.overview}</p>
                       
+                      {/* Cast Section */}
+                      {movieExtraInfo?.credits?.cast && (
+                        <div className="cast-mini-list">
+                          <h3>Top Cast</h3>
+                          <div className="cast-scroll">
+                            {movieExtraInfo.credits.cast.slice(0, 8).map(person => (
+                              <div key={person.id} className="cast-card">
+                                <img src={person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : 'https://via.placeholder.com/100'} alt="" />
+                                <span>{person.name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       <div className="action-row-main">
                         <button className="play-main-btn" onClick={() => setPlayer(p => ({...p, isPlaying: true}))}>
                           <Play size={20} fill="black" /> Play Now
@@ -254,9 +309,6 @@ const Home = () => {
                         </button>
                       </div>
                     </div>
-                  </div>
-                  <div className="modal-recommendations">
-                    {renderSection("More Like This", data.popular.slice(0, 10))}
                   </div>
                 </div>
               ) : (

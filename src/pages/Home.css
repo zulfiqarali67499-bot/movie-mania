@@ -1160,3 +1160,14 @@ select:focus-visible {
     justify-content: space-around;
   }
 }
+/* Add this to your App.css for that final 0.1 point */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: #e50914;
+  border-radius: 10px;
+}

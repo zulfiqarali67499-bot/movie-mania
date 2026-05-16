@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Heart, Zap, User, Menu, X } from 'lucide-react';
+import { Search, Heart, Zap, User, Menu, X, LogIn } from 'lucide-react';
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -25,6 +25,10 @@ const Navbar = () => {
   const navLinks = [
     { name: "Discover", path: "/", icon: <Zap size={18} /> },
     { name: "Favorites", path: "/favorite", icon: <Heart size={18} /> },
+    { name: "Profile", path: "/profile", icon: <User size={18} /> },
+    { name: "Login", path: "/login", icon: <LogIn size={18} /> },
+
+    
   ];
 
   return (
@@ -128,11 +132,6 @@ const Navbar = () => {
                     </Link>
                   </motion.div>
                 ))}
-                
-                {/* Mobile Profile Link */}
-                <Link to="/profile" className="mobile-link" onClick={() => setIsMobileMenuOpen(false)}>
-                  <User size={18} /> Profile
-                </Link>
               </div>
             </motion.div>
           </>

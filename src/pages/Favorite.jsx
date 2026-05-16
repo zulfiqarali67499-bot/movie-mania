@@ -8,7 +8,7 @@ import { getMovieDetails } from "../services/api";
 import "./Favorite.css";
 
 const Favorite = () => {
-  const { favorite, isFav, removeFav, addFav } = useMovieContext();
+  const { watchlist, isFav, removeFav, addFav } = useMovieContext();
   
   // States for Video Player
   const [activeMovie, setActiveMovie] = useState(null);
@@ -69,16 +69,16 @@ const Favorite = () => {
            </motion.h2>
            <div className="collection-stats">
               <Library size={16} color="#e50914" />
-              <span>{favorite.length} Movies Saved</span>
+              <span>{watchlist.length} Movies Saved</span>
            </div>
         </div>
       </div>
 
       {/* --- CONTENT AREA --- */}
-      {favorite.length > 0 ? (
+      { watchlist.length > 0 ? (
         <motion.div layout className="static-movie-grid">
           <AnimatePresence mode='popLayout'>
-            {favorite.map((m) => (
+            { watchlist.map((m) => (
               <motion.div 
                 key={m.id} 
                 layout
